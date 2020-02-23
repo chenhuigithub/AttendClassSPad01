@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/blue9"
+    tools:context=".aty.MainActivity">
+
+    <!-- 左侧菜单栏 -->
+
+    <LinearLayout
+        android:id="@+id/ll_wrapper_left_menu_bar_layout_activity_main"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <com.example.attendclassspad01.view.CustomRoundImageView
+            android:id="@+id/iv_user_logo_layout_fg_menu_login"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_centerHorizontal="true"
+            android:layout_margin="@dimen/dimen_padding_005"
+            android:layout_marginTop="10dp"
+            android:src="@drawable/student_logo">
+        </com.example.attendclassspad01.view.CustomRoundImageView>
+
+        <TextView
+            android:id="@+id/tv_user_name_layout_aty_main"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/dimen_padding_005"
+            android:text="张小明"
+            android:textColor="@color/white"
+            android:textSize="@dimen/dimen_text_007" />
+
+        <LinearLayout
+            android:id="@+id/ll_wrapper_left01_layout_aty_main"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:id="@+id/ll_wrapper01_layout_aty_main"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <View
+                    android:id="@+id/v_cursor01_layout_aty_main"
+                    android:layout_width="@dimen/dimen_height_001"
+                    android:layout_height="@dimen/dimen_height_010"
+                    android:background="@color/blue"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/dimen_text_007" />
+
+                <LinearLayout
+                    android:id="@+id/ll_wrapper_class_layout_aty_main"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/dimen_padding_003"
+                    android:padding="@dimen/dimen_padding_005"
+                    android:orientation="vertical">
+                    <ImageView
+                        android:layout_width="@dimen/dimen_height_008"
+                        android:layout_height="@dimen/dimen_height_008"
+                        android:background="@drawable/my_class_p" />
+
+                    <TextView
+                        android:id="@+id/tv_class_layout_aty_main"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="我的课堂"
+                        android:textColor="@color/blue"
+                        android:textSize="@dimen/dimen_text_007" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/ll_wrapper02_layout_aty_main"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <View
+                    android:id="@+id/v_cursor02_layout_aty_main"
+                    android:layout_width="@dimen/dimen_height_001"
+                    android:layout_height="@dimen/dimen_height_010"
+                    android:background="@color/blue9"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/dimen_text_007" />
+                <LinearLayout
+                    android:id="@+id/ll_wrapper_error_book_layout_aty_main"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/dimen_padding_003"
+                    android:padding="@dimen/dimen_padding_005"
+                    android:orientation="vertical">
+                    <ImageView
+                        android:layout_width="@dimen/dimen_height_008"
+                        android:layout_height="@dimen/dimen_height_008"
+                        android:background="@drawable/error_book_n" />
+                    <TextView
+                        android:id="@+id/tv_error_book_layout_aty_main"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="我的课堂"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/dimen_text_007" />
+                </LinearLayout>
+            </LinearLayout>
+
+
+        </LinearLayout>
+
+
+    </LinearLayout>
+
+
+</LinearLayout>
