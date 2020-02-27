@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:state_selected="true">
+        <shape>
+            <!-- 填充色 -->
+            <solid android:color="@color/blue10" />
+            <corners android:topLeftRadius="@dimen/dimen_height_002" android:topRightRadius="@dimen/dimen_height_002" />
+        </shape>
+    </item>
+
+
+    <item android:state_focused="true">
+        <shape>
+            <solid android:color="@color/blue10" />
+            <corners android:topLeftRadius="@dimen/dimen_height_003"
+            android:topRightRadius="@dimen/dimen_height_003" />
+        </shape>
+    </item>
+
+
+    <item>
+        <shape>
+            <solid android:color="@color/blue10" />
+            <corners android:topLeftRadius="@dimen/dimen_height_003" android:topRightRadius="@dimen/dimen_height_003" />
+        </shape>
+    </item>
+</selector>

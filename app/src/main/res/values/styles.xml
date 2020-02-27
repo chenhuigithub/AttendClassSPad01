@@ -1,4 +1,5 @@
-<resources>
+<!--suppress ALL -->
+<resources xmlns:tools="http://schemas.android.com/tools">
 
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Base.Theme.AppCompat.Light.DarkActionBar">
@@ -46,7 +47,7 @@
     </style>
 
     <!-- 自定义dialog样式 for loading -->
-    <style name="DialogForLoading" parent="@android:Theme.Dialog">
+    <style name="DialogForLoading" parent="@android:Theme.Dialog" tools:ignore="ResourceCycle">
         <item name="android:windowFrame">@null</item>
         <item name="android:windowNoTitle">true</item>
         <item name="android:windowBackground">@drawable/shape_for_custom_dialog_for_loading</item>

@@ -1,84 +1,100 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/blue9"
-    tools:context=".aty.MainActivity">
+    android:background="@color/blue9">
 
     <!-- 左侧菜单栏 -->
 
     <LinearLayout
         android:id="@+id/ll_wrapper_left_menu_bar_layout_activity_main"
-        android:layout_width="wrap_content"
+        android:layout_width="0px"
         android:layout_height="match_parent"
+        android:layout_weight="1.1"
+        android:gravity="center_horizontal"
         android:orientation="vertical">
 
         <com.example.attendclassspad01.view.CustomRoundImageView
             android:id="@+id/iv_user_logo_layout_fg_menu_login"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
+            android:layout_width="@dimen/dimen_height_014"
+            android:layout_height="@dimen/dimen_height_014"
             android:layout_centerHorizontal="true"
-            android:layout_margin="@dimen/dimen_padding_005"
-            android:layout_marginTop="10dp"
-            android:src="@drawable/student_logo">
-        </com.example.attendclassspad01.view.CustomRoundImageView>
+            android:layout_marginTop="@dimen/dimen_padding_008"
+            android:src="@drawable/student_logo"></com.example.attendclassspad01.view.CustomRoundImageView>
 
         <TextView
             android:id="@+id/tv_user_name_layout_aty_main"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="@dimen/dimen_padding_005"
+            android:layout_marginTop="@dimen/dimen_padding_004"
             android:text="张小明"
             android:textColor="@color/white"
-            android:textSize="@dimen/dimen_text_007" />
+            android:textSize="@dimen/dimen_text_008" />
+
+        <TextView
+            android:id="@+id/tv_class_name_layout_aty_main"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dimen_padding_004"
+            android:text="八年級(1)班"
+            android:textColor="@color/white"
+            android:textSize="@dimen/dimen_text_006" />
 
         <LinearLayout
             android:id="@+id/ll_wrapper_left01_layout_aty_main"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:gravity="center"
+            android:layout_marginTop="@dimen/dimen_padding_008"
+            android:gravity="center_horizontal"
             android:orientation="vertical">
 
-            <LinearLayout
-                android:id="@+id/ll_wrapper01_layout_aty_main"
+            <RelativeLayout
+                android:id="@+id/rl_wrapper_classes_layout_aty_main"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dimen_padding_008"
                 android:gravity="center"
                 android:orientation="horizontal">
 
                 <View
                     android:id="@+id/v_cursor01_layout_aty_main"
                     android:layout_width="@dimen/dimen_height_001"
-                    android:layout_height="@dimen/dimen_height_010"
+                    android:layout_height="@dimen/dimen_height_011"
+                    android:layout_alignParentLeft="true"
+                    android:layout_centerVertical="true"
                     android:background="@color/blue"
-                    android:textColor="@color/white"
                     android:textSize="@dimen/dimen_text_007" />
 
                 <LinearLayout
-                    android:id="@+id/ll_wrapper_class_layout_aty_main"
-                    android:layout_width="wrap_content"
+                    android:id="@+id/ll_wrapper_classes_layout_aty_main"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="@dimen/dimen_padding_003"
-                    android:padding="@dimen/dimen_padding_005"
-                    android:orientation="vertical">
+                    android:layout_centerInParent="true"
+                    android:gravity="center"
+                    android:orientation="vertical"
+                    android:paddingTop="@dimen/dimen_padding_006"
+                    android:paddingBottom="@dimen/dimen_padding_006">
+
                     <ImageView
-                        android:layout_width="@dimen/dimen_height_008"
-                        android:layout_height="@dimen/dimen_height_008"
-                        android:background="@drawable/my_class_p" />
+                        android:id="@+id/iv_classes_layout_aty_main"
+                        android:layout_width="@dimen/dimen_height_006"
+                        android:layout_height="@dimen/dimen_height_006"
+                        android:background="@drawable/selector_for_classes"
+                        android:scaleType="fitXY" />
 
                     <TextView
-                        android:id="@+id/tv_class_layout_aty_main"
+                        android:id="@+id/tv_classes_layout_aty_main"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/dimen_height_002"
                         android:text="我的课堂"
-                        android:textColor="@color/blue"
+                        android:textColor="@color/white"
                         android:textSize="@dimen/dimen_text_007" />
                 </LinearLayout>
-            </LinearLayout>
+            </RelativeLayout>
 
-            <LinearLayout
-                android:id="@+id/ll_wrapper02_layout_aty_main"
+            <RelativeLayout
+                android:id="@+id/rl_wrapper_error_book_layout_aty_main"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="center"
@@ -87,36 +103,48 @@
                 <View
                     android:id="@+id/v_cursor02_layout_aty_main"
                     android:layout_width="@dimen/dimen_height_001"
-                    android:layout_height="@dimen/dimen_height_010"
-                    android:background="@color/blue9"
-                    android:textColor="@color/white"
+                    android:layout_height="@dimen/dimen_height_011"
+                    android:layout_alignParentLeft="true"
+                    android:layout_centerVertical="true"
+                    android:background="@color/blue"
                     android:textSize="@dimen/dimen_text_007" />
+
                 <LinearLayout
                     android:id="@+id/ll_wrapper_error_book_layout_aty_main"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="@dimen/dimen_padding_003"
-                    android:padding="@dimen/dimen_padding_005"
-                    android:orientation="vertical">
+                    android:layout_centerInParent="true"
+                    android:gravity="center"
+                    android:orientation="vertical"
+                    android:paddingTop="@dimen/dimen_padding_006"
+                    android:paddingBottom="@dimen/dimen_padding_006">
+
                     <ImageView
-                        android:layout_width="@dimen/dimen_height_008"
-                        android:layout_height="@dimen/dimen_height_008"
-                        android:background="@drawable/error_book_n" />
+                        android:id="@+id/iv_error_book_layout_aty_main"
+                        android:layout_width="@dimen/dimen_height_006"
+                        android:layout_height="@dimen/dimen_height_006"
+                        android:background="@drawable/selector_for_error_book"
+                        android:scaleType="fitXY" />
+
                     <TextView
                         android:id="@+id/tv_error_book_layout_aty_main"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="我的课堂"
+                        android:layout_marginTop="@dimen/dimen_height_002"
+                        android:text="错题本"
                         android:textColor="@color/white"
                         android:textSize="@dimen/dimen_text_007" />
                 </LinearLayout>
-            </LinearLayout>
-
-
+            </RelativeLayout>
         </LinearLayout>
-
-
     </LinearLayout>
+
+    <FrameLayout
+        android:id="@+id/fl_right_content_layout_activity_main"
+        android:layout_width="0px"
+        android:layout_height="match_parent"
+        android:layout_toRightOf="@id/ll_wrapper_left_menu_bar_layout_activity_main"
+        android:layout_weight="8.9" />
 
 
 </LinearLayout>

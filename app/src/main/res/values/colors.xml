@@ -13,6 +13,7 @@
     <color name="blue7">#047DD4</color>
     <color name="blue8">#07519a</color>
     <color name="blue9">#30323D</color>
+    <color name="blue10">#4F6172</color>
     <color name="light_blue">#CCECFB</color>
     <color name="light_blue01">#EBF8FD</color>
     <color name="light_blue02">#82D1FF</color>
@@ -38,6 +39,7 @@
     <color name="light_grey12">#BFBFBF</color>
     <color name="light_grey13">#F3F3F3</color>
     <color name="light_grey14">#FBFBFB</color>
+    <color name="light_grey15">#EEEEEE</color>
     <color name="black">#22242a</color>
     <color name="black1">#ff000000</color>
     <color name="black2">#232323</color>

@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/blue9"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dimen_padding_008"
+        android:background="@drawable/selector_for_blue_corner_rectangle01"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingTop="@dimen/dimen_padding_006"
+        android:paddingBottom="@dimen/dimen_padding_006">
+
+        <RelativeLayout
+            android:id="@+id/rl_wrapper_switch_class_layout_fg_error_book"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="top"
+            android:clickable="true"
+            android:gravity="top|center_vertical"
+            android:orientation="horizontal"
+            android:paddingLeft="@dimen/dimen_padding_008"
+            android:paddingTop="@dimen/dimen_padding_006"
+            android:paddingRight="@dimen/dimen_padding_008"
+            android:paddingBottom="@dimen/dimen_padding_006"
+            android:visibility="gone">
+
+            <TextView
+                android:id="@+id/tv_class_name_layout_fg_error_book"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="九年级（1）班"
+                android:textColor="@color/white"
+                android:textSize="@dimen/dimen_text_009"></TextView>
+
+            <TextView
+                android:id="@+id/tv_switch_class_layout_fg_error_book"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/dimen_padding_004"
+                android:layout_toRightOf="@id/tv_class_name_layout_fg_error_book"
+                android:text="切换"
+                android:textColor="@color/red02"
+                android:textSize="@dimen/dimen_text_006"></TextView>
+        </RelativeLayout>
+
+        <ImageView
+            android:layout_width="@dimen/dimen_height_006"
+            android:layout_height="@dimen/dimen_height_006"
+            android:layout_marginLeft="@dimen/dimen_padding_008"
+            android:background="@drawable/teacher_logo"
+            android:scaleType="fitXY" />
+
+        <TextView
+            android:id="@+id/tv_msg01_layout_fg_error_book"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/dimen_padding_004"
+            android:text="王老师(英语) 正在讲课"
+            android:textColor="@color/white"
+            android:textSize="@dimen/dimen_text_006"></TextView>
+
+        <ImageView
+            android:layout_width="@dimen/dimen_height_005"
+            android:layout_height="@dimen/dimen_height_005"
+            android:layout_marginLeft="@dimen/dimen_padding_003"
+            android:background="@drawable/playing_sign"
+            android:scaleType="fitXY" />
+
+        <TextView
+            android:id="@+id/tv_msg02_layout_fg_error_book"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/dimen_padding_004"
+            android:layout_marginRight="@dimen/dimen_padding_008"
+            android:gravity="right"
+            android:text="教师屏幕共享中 ... ..."
+            android:textColor="@color/white"
+            android:textSize="@dimen/dimen_text_006"></TextView>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/light_grey15"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="@dimen/dimen_padding_007"
+            android:background="@color/white"
+            android:padding="@dimen/dimen_padding_009"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/tv_msg03_layout_fg_error_book"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="共9个"
+                android:textSize="@dimen/dimen_text_007"
+                android:textColor="@color/color_text_title01"/>
+
+            <GridView
+                android:id="@+id/gdv_book_layout_fg_error_book"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/dimen_padding_009"
+                android:layout_marginTop="@dimen/dimen_padding_008"
+                android:layout_marginRight="@dimen/dimen_padding_009"
+                android:layout_marginBottom="@dimen/dimen_padding_006"
+                android:cacheColorHint="#00000000"
+                android:fadingEdge="none"
+                android:fadingEdgeLength="0dp"
+                android:horizontalSpacing="@dimen/dimen_padding_006"
+                android:listSelector="#00000000"
+                android:numColumns="5"
+                android:verticalSpacing="@dimen/dimen_padding_008" />
+        </LinearLayout>
+    </LinearLayout>
+</LinearLayout>
