@@ -15,11 +15,12 @@
         android:orientation="vertical">
 
         <com.example.attendclassspad01.view.CustomRoundImageView
-            android:id="@+id/iv_user_logo_layout_fg_menu_login"
+            android:id="@+id/iv_user_logo_layout_aty_main"
             android:layout_width="@dimen/dimen_height_014"
             android:layout_height="@dimen/dimen_height_014"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="@dimen/dimen_padding_008"
+            android:clickable="true"
             android:src="@drawable/student_logo"></com.example.attendclassspad01.view.CustomRoundImageView>
 
         <TextView

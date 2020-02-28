@@ -1,10 +1,6 @@
 package com.example.attendclassspad01.aty;
 
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentActivity;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
-
+import android.content.Intent;
 import android.content.res.Resources;
 import android.os.Bundle;
 import android.view.View;
@@ -13,6 +9,11 @@ import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentActivity;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 import com.example.attendclassspad01.R;
 import com.example.attendclassspad01.Util.ActivityUtils;
@@ -43,6 +44,8 @@ public class MainActivity extends FragmentActivity {
     private TextView tvErrorBook;
     private View vCursor02;
 
+    private ImageView ivUserLogo;//头像
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -72,6 +75,9 @@ public class MainActivity extends FragmentActivity {
         ivClasses = (ImageView) findViewById(R.id.iv_classes_layout_aty_main);
         tvClasses = (TextView) findViewById(R.id.tv_classes_layout_aty_main);
         vCursor01 = (View) findViewById(R.id.v_cursor01_layout_aty_main);
+        //头像
+        ivUserLogo = (ImageView) findViewById(R.id.iv_user_logo_layout_aty_main);
+        ivUserLogo.setOnClickListener(new Listeners());
 
         rlErrorBook = (RelativeLayout) findViewById(R.id.rl_wrapper_error_book_layout_aty_main);
         rlErrorBook.setOnClickListener(new Listeners());
@@ -128,6 +134,14 @@ public class MainActivity extends FragmentActivity {
                     tvClasses.setTextColor(res.getColor(R.color.white));
                     vCursor02.setVisibility(View.VISIBLE);
                     vCursor01.setVisibility(View.INVISIBLE);
+
+                    break;
+                case R.id.iv_user_logo_layout_aty_main://登录
+                    Intent intent = new Intent(MainActivity.this,
+                            LoginActivity.class);
+                    startActivity(intent);
+
+                    finish();
 
                     break;
             }

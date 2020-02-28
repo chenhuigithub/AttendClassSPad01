@@ -1,0 +1,182 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:gravity="center"
+    android:orientation="vertical"
+    android:padding="@dimen/dimen_padding_010">
+
+    <TextView
+        android:id="@+id/tv_next_layout_aty_choose_module"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:text="选择下一步操作"
+        android:textColor="@color/color_text_title01"
+        android:textSize="@dimen/dimen_text_011" />
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_margin="@dimen/dimen_padding_008"
+        android:background="@color/white"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:layout_width="0px"
+            android:layout_height="match_parent"
+            android:layout_weight="5"
+            android:background="@color/white"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:paddingLeft="@dimen/dimen_padding_009"
+            android:paddingTop="@dimen/dimen_padding_007"
+            android:paddingRight="@dimen/dimen_padding_009"
+            android:paddingBottom="@dimen/dimen_padding_007">
+
+            <LinearLayout
+                android:id="@+id/ll_wrapper_01_layout_aty_choose_module"
+                android:layout_width="0px"
+                android:layout_height="match_parent"
+                android:layout_weight="5"
+                android:background="@drawable/selector_for_blue_stroke_rectangle"
+                android:gravity="center"
+                android:orientation="horizontal"
+                android:padding="@dimen/dimen_padding_008">
+
+                <RelativeLayout
+                    android:id="@+id/rl_wrapper_into_class_layout_aty_choose_module"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/into_class"
+                    android:clickable="true"
+                    android:gravity="center_horizontal"
+                    android:orientation="vertical"
+                    android:padding="@dimen/dimen_padding_008">
+
+                    <TextView
+                        android:id="@+id/tv_msg01_layout_aty_choose_module"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentTop="true"
+                        android:layout_centerHorizontal="true"
+                        android:text="进入班级"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/dimen_text_009" />
+
+                    <LinearLayout
+                        android:id="@+id/ll_msg06_layout_aty_choose_module"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentBottom="true"
+                        android:layout_centerHorizontal="true"
+                        android:gravity="center"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/tv_msg02_layout_aty_choose_module"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="课程已开始 00:02:30，请尽快"
+                            android:textColor="@color/white"
+                            android:textSize="@dimen/dimen_text_008" />
+
+                        <TextView
+                            android:id="@+id/tv_msg05_layout_aty_choose_module"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="进入课堂开始上课"
+                            android:textColor="@color/white"
+                            android:textSize="@dimen/dimen_text_008" />
+                    </LinearLayout>
+
+                    <ListView
+                        android:id="@+id/lv_classes_list_layout_aty_choose_module"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_above="@id/ll_msg06_layout_aty_choose_module"
+                        android:layout_below="@id/tv_msg01_layout_aty_choose_module"
+                        android:layout_margin="@dimen/dimen_padding_005"
+                        android:cacheColorHint="#00000000"
+                        android:fadingEdge="none"
+                        android:fadingEdgeLength="0dp"
+                        android:listSelector="#00000000"></ListView>
+                </RelativeLayout>
+            </LinearLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0px"
+            android:layout_height="match_parent"
+            android:layout_weight="5"
+            android:background="@color/white"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:paddingLeft="@dimen/dimen_padding_009"
+            android:paddingTop="@dimen/dimen_padding_007"
+            android:paddingRight="@dimen/dimen_padding_009"
+            android:paddingBottom="@dimen/dimen_padding_007">
+
+            <LinearLayout
+                android:id="@+id/ll_wrapper_02_layout_aty_choose_module"
+                android:layout_width="0px"
+                android:layout_height="match_parent"
+                android:layout_weight="5"
+                android:background="@drawable/selector_for_blue_stroke_rectangle"
+                android:gravity="center"
+                android:orientation="horizontal"
+                android:padding="@dimen/dimen_padding_008">
+
+                <RelativeLayout
+                    android:id="@+id/rl_wrapper_into_error_book_layout_aty_choose_module"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/into_error_book"
+                    android:clickable="true"
+                    android:orientation="vertical"
+                    android:padding="@dimen/dimen_padding_008">
+
+                    <TextView
+                        android:id="@+id/tv_msg03_layout_aty_choose_module"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentTop="true"
+                        android:layout_centerHorizontal="true"
+                        android:text="进入错题本"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/dimen_text_009" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentBottom="true"
+                        android:layout_centerHorizontal="true"
+                        android:gravity="center"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/tv_msg04_layout_aty_choose_module"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="归集课堂测试错题，记录失分点"
+                            android:textColor="@color/white"
+                            android:textSize="@dimen/dimen_text_008" />
+
+                        <TextView
+                            android:id="@+id/tv_msg06_layout_aty_choose_module"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="错题本为解决问题提供方向"
+                            android:textColor="@color/white"
+                            android:textSize="@dimen/dimen_text_008" />
+                    </LinearLayout>
+
+                </RelativeLayout>
+            </LinearLayout>
+
+        </LinearLayout>
+    </LinearLayout>
+</LinearLayout>

@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/transparent"
+    android:gravity="center"
+    android:orientation="vertical"
+    android:padding="@dimen/dimen_padding_008">
+
+    <RelativeLayout
+        android:id="@+id/iv_layout_v_classes01"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/selector_for_corner_blue_stroke_rectangle"
+        android:padding="@dimen/dimen_padding_007"
+        android:scaleType="fitXY">
+
+        <ImageView
+            android:id="@+id/iv_start_layout_v_classes01"
+            android:layout_width="@dimen/dimen_height_004"
+            android:layout_height="@dimen/dimen_height_004"
+            android:visibility="invisible"
+            android:layout_centerVertical="true"
+            android:background="@drawable/start"
+            android:scaleType="fitXY" />
+
+        <TextView
+            android:id="@+id/tv_class_name_layout_v_classes01"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/dimen_padding_004"
+            android:layout_toRightOf="@id/iv_start_layout_v_classes01"
+            android:text="九年级（1）班"
+            android:textColor="@color/light_blue02"
+            android:textSize="@dimen/dimen_text_008"></TextView>
+
+        <TextView
+            android:id="@+id/tv_msg01_layout_v_classes01"
+            android:layout_width="wrap_content"
+            android:visibility="invisible"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_marginLeft="@dimen/dimen_padding_004"
+            android:layout_toRightOf="@id/tv_class_name_layout_v_classes01"
+            android:text="直播中..."
+            android:textColor="@color/tomato2"
+            android:textSize="@dimen/dimen_text_005"></TextView>
+
+
+    </RelativeLayout>
+
+</LinearLayout>

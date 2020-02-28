@@ -77,9 +77,9 @@
         <item>物理</item>
         <item>化学</item>
         <item>生物</item>
+        <item>地理</item>
         <item>政治</item>
         <item>历史</item>
-        <item>地理</item>
     </string-array>
 
     <!-- 设置 -->
