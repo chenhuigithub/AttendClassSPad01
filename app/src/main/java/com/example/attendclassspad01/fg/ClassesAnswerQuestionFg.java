@@ -4,21 +4,17 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
-import android.widget.Toast;
+import android.widget.AdapterView;
+import android.widget.ImageView;
+import android.widget.ListView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
 
 import com.example.attendclassspad01.R;
 import com.example.attendclassspad01.Util.Constants;
 import com.example.attendclassspad01.Util.ConstantsUtils;
-import com.example.attendclassspad01.adapter.ErrorBookAdapter;
-import com.example.attendclassspad01.callback.InterfacesCallback;
+import com.example.attendclassspad01.adapter.TestQuestionAdapter01;
 import com.example.attendclassspad01.model.Test;
 import com.example.attendclassspad01.model.TestPaper;
 
@@ -26,40 +22,31 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * 错题本
- *
- * @author chenhui_2020.02.27
+ * 答题界面
+ * author chenhui_2020.03.04
  */
-public class ErrorBookFg extends BaseNotPreLoadFg implements InterfacesCallback.ICanKnowSth12 {
+public class ClassesAnswerQuestionFg extends BaseNotPreLoadFg {
     private boolean isPrepared;// 标志位，标志已经初始化完成
     private boolean hasLoadOnce = false;// 是否已被加载过一次，第二次就不再去请求数据了
 
-    private List<TestPaper> testPaperList;//试卷
+    private TestPaper paper;//试卷
+    private List<Test> questionList;//题目
 
-    private InterfacesCallback.ICanKnowSth12 callback12;//回调
-
-    private ErrorBookAdapter ebAdapter;//错题本适配器
-    private ErrorBookTypeFg typeFg;//错题本类型
-    private ErrorBookContentFg contentFg;//错题本内容
+    private TestQuestionAdapter01 qAdapter;//题目适配器
 
     private View allFgView;// 总布局
-    //    private GridView gdvErrorBook;//错题本
-    private RelativeLayout rlContent;
-    private TextView tvCount;//题目个数
-    private TextView tvMsg03;//提示
+    private ListView lvQuestion;//题目
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         if (allFgView == null) {
-            allFgView = inflater.inflate(R.layout.layout_fg_error_book, null);
+            allFgView = inflater.inflate(R.layout.layout_fg_classes_answer_question, null);
 
-            testPaperList = new ArrayList<TestPaper>();
-            callback12 = (InterfacesCallback.ICanKnowSth12) this;
+            paper = new TestPaper();
 
             initView(allFgView);
         }
-
         // 因为共用一个Fragment视图，所以当前这个视图已被加载到Activity中，必须先清除后再加入Activity
         ViewGroup parent = (ViewGroup) allFgView.getParent();
         if (parent != null) {
@@ -73,64 +60,50 @@ public class ErrorBookFg extends BaseNotPreLoadFg implements InterfacesCallback.
     }
 
     private void initView(View allFgView) {
-        tvCount = (TextView) allFgView.findViewById(R.id.tv_paper_count_layout_fg_error_book);
-        tvCount.setOnClickListener(new Listeners());
-        tvMsg03 = (TextView) allFgView.findViewById(R.id.tv_msg03_layout_fg_error_book);
+        lvQuestion = allFgView.findViewById(R.id.lv_question_layout_fg_caq);
+        questionList = getTestQuestionList(paper);
+        setLvQuestionAdapter();
+        setLvListener();
 
-        testPaperList = getTestPaperList();
-        typeFg = new ErrorBookTypeFg(testPaperList, callback12);
-        showTypePage();
+        //拍照
+        ImageView ivTakePhoto = (ImageView) allFgView.findViewById(R.id.iv_take_photo_layout_fg_caq);
+        ivTakePhoto.setOnClickListener(new Listeners());
+        //本地
+        ImageView ivLocalPic = (ImageView) allFgView.findViewById(R.id.iv_local_pic_layout_fg_caq);
+        ivLocalPic.setOnClickListener(new Listeners());
+        //删除已选照片
+        ImageView ivDeletePic = (ImageView) allFgView.findViewById(R.id.iv_delete_layout_fg_caq);
+        ivTakePhoto.setOnClickListener(new Listeners());
     }
 
-    /**
-     * 显示错题本类型页面
-     */
-    private void showTypePage() {
-        showContent(typeFg);
-
-        tvCount.setText("共" + String.valueOf(testPaperList.size() - 1) + "个");
-        tvMsg03.setVisibility(View.GONE);
-    }
-
-    /**
-     * 显示错题本内容页面
-     */
-    private void showContentPage(TestPaper paper) {
-        showContent(contentFg);
-
-        tvMsg03.setVisibility(View.VISIBLE);
-        tvMsg03.setText(" > " + paper.getName());
-    }
-
-    /**
-     * 设置内容显示
-     *
-     * @param fg
-     */
-    private void showContent(Fragment fg) {
-        FragmentManager manager = getActivity().getSupportFragmentManager();
-        FragmentTransaction transaction = manager.beginTransaction();
-        if (fg == null) {
-            transaction.add(R.id.ll_wrapper_content_layout_fg_error_book, fg);
+    private void setLvQuestionAdapter() {
+        if (qAdapter == null) {
+            qAdapter = new TestQuestionAdapter01(getActivity(), paper.getQuestionList(), 0);
+            lvQuestion.setAdapter(qAdapter);
         } else {
-            transaction.replace(R.id.ll_wrapper_content_layout_fg_error_book, fg);
-            transaction.addToBackStack(null);
+            qAdapter.notifyDataSetChanged();
         }
-
-        transaction.commit();
     }
 
-    /**
-     * 设置错题本适配器
-     */
-//    private void setBookAdapter() {
-//        if (ebAdapter == null) {
-//            ebAdapter = new ErrorBookAdapter(getActivity(), bookList);
-//            gdvErrorBook.setAdapter(ebAdapter);
-//        } else {
-//            ebAdapter.notifyDataSetChanged();
-//        }
-//    }
+
+    private void setLvListener() {
+        lvQuestion.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                lvQuestion.setSelected(false);
+
+                if (paper != null) {
+                    List<Test> qList = paper.getQuestionList();
+                    Test q = qList.get(position);
+                    if (q != null) {
+                        q.setChoiced(true);
+                    }
+                }
+
+                setLvQuestionAdapter();
+            }
+        });
+    }
 
     /**
      * 获取错题本假数据
@@ -161,6 +134,7 @@ public class ErrorBookFg extends BaseNotPreLoadFg implements InterfacesCallback.
         return list;
     }
 
+
     /**
      * 获取试题列表
      *
@@ -187,19 +161,6 @@ public class ErrorBookFg extends BaseNotPreLoadFg implements InterfacesCallback.
         return tests;
     }
 
-    @Override
-    public void doSth(TestPaper paper) {
-        if (paper != null) {
-            if (ConstantsUtils.ADD.equals(paper.getID())) {
-                Toast.makeText(getActivity(), "请新增错题本", Toast.LENGTH_SHORT).show();
-            } else {
-//            Toast.makeText(getActivity(), "" + paper.getName(), Toast.LENGTH_SHORT).show();
-                contentFg = new ErrorBookContentFg(paper);
-                showContentPage(paper);
-
-            }
-        }
-    }
 
     @Override
     protected void lazyLoad() {
@@ -208,17 +169,11 @@ public class ErrorBookFg extends BaseNotPreLoadFg implements InterfacesCallback.
 //        }
     }
 
-    /**
-     * 控件监听
-     *
-     * @author chenhui
-     */
     private class Listeners implements View.OnClickListener {
         @Override
         public void onClick(View v) {
             switch (v.getId()) {
-                case R.id.tv_paper_count_layout_fg_error_book://（错题本）个数
-                    showTypePage();
+                case R.id.iv_take_photo_layout_fg_caq://拍照
 
                     break;
             }

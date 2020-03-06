@@ -2,10 +2,13 @@ package com.example.attendclassspad01.aty;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
+import android.text.Spannable;
+import android.text.SpannableStringBuilder;
+import android.text.style.ForegroundColorSpan;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
@@ -48,15 +51,30 @@ public class ChooseModuleAty extends Activity {
         rlIntoClass = (RelativeLayout) findViewById(R.id.rl_wrapper_into_class_layout_aty_choose_module);
         rlIntoClass.setOnClickListener(new Listeners());
 
+        TextView tvMsg05 = (TextView) findViewById(R.id.tv_msg05_layout_aty_choose_module);
+        //str代表要显示的全部字符串
+        SpannableStringBuilder style = new SpannableStringBuilder("进入课堂 开始上课");
+        style.setSpan(new ForegroundColorSpan(Color.parseColor("#027DD3")), 0, 4, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+        tvMsg05.setText(style);
+
         //进入错题本
         rlWrapper02 = (LinearLayout) findViewById(R.id.ll_wrapper_02_layout_aty_choose_module);
         RelativeLayout rlIntoErrorBook = (RelativeLayout) findViewById(R.id.rl_wrapper_into_error_book_layout_aty_choose_module);
         rlIntoErrorBook.setOnClickListener(new Listeners());
 
+        TextView tvMsg06 = (TextView) findViewById(R.id.tv_msg06_layout_aty_choose_module);
+        //str代表要显示的全部字符串
+        SpannableStringBuilder style1 = new SpannableStringBuilder("错题本 为解决问题提供方向");
+        style1.setSpan(new ForegroundColorSpan(Color.parseColor("#FE710A")), 0, 4, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+        tvMsg06.setText(style1);
+
+        //班级列表
         lvClassesList = (ListView) findViewById(R.id.lv_classes_list_layout_aty_choose_module);
         classesList = getClassesList();
         setLvClassesListAdapter();
         setLvClassesListListeners();
+
+
     }
 
     private List<Classes> getClassesList() {
@@ -87,16 +105,16 @@ public class ChooseModuleAty extends Activity {
         lvClassesList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                ImageView ivStart = view.findViewById(R.id.iv_start_layout_v_classes01);
-                ivStart.setVisibility(View.VISIBLE);
-                TextView tvMsg01 = view.findViewById(R.id.tv_msg01_layout_v_classes01);
-                tvMsg01.setVisibility(View.VISIBLE);
+                Classes classes = classesList.get(position);
+                if (classes != null) {
+                    classes.setHasChoiced(true);
+                }
+
+                cAdapter.notifyDataSetChanged();
 
                 rlIntoClass.performClick();
+                //不抢焦点
                 lvClassesList.setSelected(false);
-
-                RelativeLayout rlWrapperChoiced = (RelativeLayout) view.findViewById(R.id.iv_layout_v_classes01);
-                rlWrapperChoiced.setSelected(true);
 
                 Intent intent = new Intent(ChooseModuleAty.this, MainActivity.class);
                 startActivity(intent);

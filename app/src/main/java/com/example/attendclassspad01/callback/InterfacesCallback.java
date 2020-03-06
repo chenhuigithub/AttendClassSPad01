@@ -5,10 +5,10 @@ import android.graphics.Picture;
 import android.view.View;
 import android.widget.AdapterView;
 
-import com.example.attendclassspad01.model.Book;
 import com.example.attendclassspad01.model.Classes;
 import com.example.attendclassspad01.model.KeyValue;
 import com.example.attendclassspad01.model.TestData;
+import com.example.attendclassspad01.model.TestPaper;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -170,7 +170,7 @@ public class InterfacesCallback {
     }
 
     /**
-     * 交互接口：传递错题本信息
+     * 交互接口：传递套卷信息
      *
      * @author zhaochenhui_2017.05.24
      */
@@ -178,7 +178,7 @@ public class InterfacesCallback {
         /**
          * 获知信息
          */
-        public void doSth(Book book);
+        public void doSth(TestPaper paper);
     }
 
     /**

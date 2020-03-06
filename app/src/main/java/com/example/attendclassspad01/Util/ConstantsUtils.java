@@ -143,5 +143,9 @@ public class ConstantsUtils {
      * 是否已登录
      */
     public final static String HAS_LOGINED = "HAS_LOGINED";
+    /**
+     * 添加
+     */
+    public final static String ADD = "add";
 
 }

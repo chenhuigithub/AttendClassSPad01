@@ -6,7 +6,7 @@ package com.example.attendclassspad01.model;
 public class Classes {
     private String ID;
     private String name;
-    private String hasChoiced;//是否被选中
+    private boolean hasChoiced;//是否被选中
 
     public String getID() {
         return ID;
@@ -24,11 +24,11 @@ public class Classes {
         this.name = name;
     }
 
-    public String getHasChoiced() {
+    public boolean isHasChoiced() {
         return hasChoiced;
     }
 
-    public void setHasChoiced(String hasChoiced) {
+    public void setHasChoiced(boolean hasChoiced) {
         this.hasChoiced = hasChoiced;
     }
 }

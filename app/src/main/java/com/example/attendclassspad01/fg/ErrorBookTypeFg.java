@@ -15,6 +15,7 @@ import com.example.attendclassspad01.Util.Constants;
 import com.example.attendclassspad01.adapter.ErrorBookAdapter;
 import com.example.attendclassspad01.callback.InterfacesCallback;
 import com.example.attendclassspad01.model.Book;
+import com.example.attendclassspad01.model.TestPaper;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,7 +27,7 @@ public class ErrorBookTypeFg extends BaseNotPreLoadFg {
     private boolean isPrepared;// 标志位，标志已经初始化完成
     private boolean hasLoadOnce = false;// 是否已被加载过一次，第二次就不再去请求数据了
 
-    private List<Book> bookList;//错题本列表
+    private List<TestPaper> paperList;//错题本列表
 
     InterfacesCallback.ICanKnowSth12 callback;//回调
 
@@ -38,11 +39,11 @@ public class ErrorBookTypeFg extends BaseNotPreLoadFg {
     public ErrorBookTypeFg() {
     }
 
-    public ErrorBookTypeFg(List<Book> list, InterfacesCallback.ICanKnowSth12 callback) {
+    public ErrorBookTypeFg(List<TestPaper> list, InterfacesCallback.ICanKnowSth12 callback) {
         if (list != null) {
-            this.bookList = list;
+            this.paperList = list;
         } else {
-            bookList = new ArrayList<Book>();
+            paperList = new ArrayList<TestPaper>();
         }
 
         this.callback = callback;
@@ -52,7 +53,7 @@ public class ErrorBookTypeFg extends BaseNotPreLoadFg {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         if (allFgView == null) {
-            allFgView = inflater.inflate(R.layout.layout_v_error_book_type, null);
+            allFgView = inflater.inflate(R.layout.layout_fg_error_book_type, null);
 
             initView(allFgView);
         }
@@ -76,7 +77,7 @@ public class ErrorBookTypeFg extends BaseNotPreLoadFg {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 if (callback != null) {
-                    callback.doSth(bookList.get(position));
+                    callback.doSth(paperList.get(position));
                 }
             }
         });
@@ -87,7 +88,7 @@ public class ErrorBookTypeFg extends BaseNotPreLoadFg {
      */
     private void setBookAdapter() {
         if (ebAdapter == null) {
-            ebAdapter = new ErrorBookAdapter(getActivity(), bookList);
+            ebAdapter = new ErrorBookAdapter(getActivity(), paperList);
             gdvErrorBook.setAdapter(ebAdapter);
         } else {
             ebAdapter.notifyDataSetChanged();
@@ -99,7 +100,7 @@ public class ErrorBookTypeFg extends BaseNotPreLoadFg {
      *
      * @return
      */
-    private List<Book> getBookList() {
+    private List<Book> getPaperList() {
         List<Book> list = new ArrayList<Book>();
         for (int i = 0; i < Constants.subjectPicResID.length; i++) {
             Book book = new Book();

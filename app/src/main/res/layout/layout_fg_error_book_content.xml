@@ -5,5 +5,12 @@
     android:background="@color/white"
     android:orientation="vertical">
 
+    <ListView
+        android:id="@+id/lv_question_layout_fg_error_book_content"
+        style="@style/NormalLv"
+        android:background="@color/white"
+        android:dividerHeight="@dimen/dimen_height_004"
+        android:visibility="visible" />
+
 
 </LinearLayout>
