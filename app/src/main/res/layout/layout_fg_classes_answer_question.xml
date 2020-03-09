@@ -73,6 +73,7 @@
             android:paddingBottom="@dimen/dimen_padding_008">
 
             <ImageView
+                android:id="@+id/iv_answer_question_pic_layout_fg_caq"
                 android:layout_width="@dimen/dimen_height_024"
                 android:layout_height="@dimen/dimen_height_017"
                 android:background="@drawable/add03"

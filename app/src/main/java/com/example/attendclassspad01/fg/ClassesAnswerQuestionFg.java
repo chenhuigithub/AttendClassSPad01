@@ -1,6 +1,16 @@
 package com.example.attendclassspad01.fg;
 
+import android.Manifest;
+import android.app.Activity;
+import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.provider.MediaStore;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,6 +20,9 @@ import android.widget.ListView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
+import androidx.core.content.FileProvider;
 
 import com.example.attendclassspad01.R;
 import com.example.attendclassspad01.Util.Constants;
@@ -18,8 +31,13 @@ import com.example.attendclassspad01.adapter.TestQuestionAdapter01;
 import com.example.attendclassspad01.model.Test;
 import com.example.attendclassspad01.model.TestPaper;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+
+import static com.example.attendclassspad01.Util.ConstantsUtils.TAKE_PHOTO;
 
 /**
  * 答题界面
@@ -31,11 +49,14 @@ public class ClassesAnswerQuestionFg extends BaseNotPreLoadFg {
 
     private TestPaper paper;//试卷
     private List<Test> questionList;//题目
+    private Uri imageUri;
+
 
     private TestQuestionAdapter01 qAdapter;//题目适配器
 
     private View allFgView;// 总布局
     private ListView lvQuestion;//题目
+    private ImageView ivAnswerQuestionPic;//答题图片
 
     @Nullable
     @Override
@@ -65,6 +86,8 @@ public class ClassesAnswerQuestionFg extends BaseNotPreLoadFg {
         setLvQuestionAdapter();
         setLvListener();
 
+        //答题图片
+        ivAnswerQuestionPic = (ImageView) allFgView.findViewById(R.id.iv_answer_question_pic_layout_fg_caq);
         //拍照
         ImageView ivTakePhoto = (ImageView) allFgView.findViewById(R.id.iv_take_photo_layout_fg_caq);
         ivTakePhoto.setOnClickListener(new Listeners());
@@ -161,6 +184,68 @@ public class ClassesAnswerQuestionFg extends BaseNotPreLoadFg {
         return tests;
     }
 
+    private void takePhoto() {
+        // 创建一个File对象，用于保存摄像头拍下的图片，这里把图片命名为output_image.jpg
+        // 并将它存放在手机SD卡的应用关联缓存目录下
+        File outputImage = new File(getActivity().getExternalCacheDir(), "answer_question_pic.jpg");
+
+        // 对照片更换设置
+        try {
+            // 如果上一次的照片存在，就删除
+            if (outputImage.exists()) {
+                outputImage.delete();
+            }
+            // 创建一个新的文件
+            outputImage.createNewFile();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        // 如果Android版本大于等于7.0
+        if (Build.VERSION.SDK_INT >= 24) {
+            // 将File对象转换成一个封装过的Uri对象
+            Log.i("包名", getActivity().getPackageName().toString());
+            imageUri = FileProvider.getUriForFile(getActivity(), getActivity().getPackageName() + ".fileprovider", outputImage);
+        } else {
+            // 将File对象转换为Uri对象，这个Uri标识着output_image.jpg这张图片的本地真实路径
+            imageUri = Uri.fromFile(outputImage);
+        }
+
+        // 动态申请权限
+        if (ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions((Activity) getActivity(), new String[]{Manifest.permission.CAMERA}, 100);
+        } else {
+            // 启动相机程序
+            startCamera();
+        }
+    }
+
+    private void startCamera() {
+        Intent intent = new Intent("android.media.action.IMAGE_CAPTURE");
+        // 指定图片的输出地址为imageUri
+        intent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri);
+        startActivityForResult(intent, TAKE_PHOTO);
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        switch (requestCode) {
+            case TAKE_PHOTO:
+//                if (requestCode == RESULT_OK) {
+                try {
+                    // 将图片解析成Bitmap对象
+                    Bitmap bitmap = BitmapFactory.decodeStream(getActivity().getContentResolver().openInputStream(imageUri));
+                    // 将图片显示出来
+                    ivAnswerQuestionPic.setImageBitmap(bitmap);
+                } catch (FileNotFoundException e) {
+                    e.printStackTrace();
+                }
+//                }
+                break;
+            default:
+        }
+    }
 
     @Override
     protected void lazyLoad() {
@@ -174,7 +259,7 @@ public class ClassesAnswerQuestionFg extends BaseNotPreLoadFg {
         public void onClick(View v) {
             switch (v.getId()) {
                 case R.id.iv_take_photo_layout_fg_caq://拍照
-
+                    takePhoto();
                     break;
             }
         }

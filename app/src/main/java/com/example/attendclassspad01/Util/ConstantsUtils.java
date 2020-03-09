@@ -148,4 +148,9 @@ public class ConstantsUtils {
      */
     public final static String ADD = "add";
 
+    /**
+     * 拍照
+     */
+    public static final int TAKE_PHOTO = 1;
+
 }
