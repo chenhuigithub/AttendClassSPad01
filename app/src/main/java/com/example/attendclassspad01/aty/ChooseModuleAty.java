@@ -4,19 +4,29 @@ import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.os.Handler;
 import android.text.Spannable;
 import android.text.SpannableStringBuilder;
+import android.text.TextUtils;
 import android.text.style.ForegroundColorSpan;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.attendclassspad01.R;
+import com.example.attendclassspad01.Util.ConstantsForPreferencesUtils;
+import com.example.attendclassspad01.Util.PreferencesUtils;
+import com.example.attendclassspad01.Util.ServerRequestUtils;
+import com.example.attendclassspad01.Util.ViewUtils;
 import com.example.attendclassspad01.adapter.Classes01Adapter;
 import com.example.attendclassspad01.model.Classes;
+
+import org.json.JSONArray;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,24 +35,35 @@ import java.util.List;
  * 选择模块界面
  */
 public class ChooseModuleAty extends Activity {
-    private List<Classes> classesList;//班级列表
+    private List<Classes> classList;// 班级列表
+    private String classesIDCurr = "";//当前选中的班级ID
 
     private Classes01Adapter cAdapter;//班级列表适配器
+    private ServerRequestUtils requestUtils;// 网络请求
+    private Handler uiHandler;// 主线程handler
+    private ViewUtils vUtils;// 布局工具
 
     private LinearLayout rlWrapper01;//进入班级外框
     private RelativeLayout rlIntoClass;//进入班级
     private LinearLayout rlWrapper02;//进入错题本外框
+    private ImageView ivNoData;
 
-    private ListView lvClassesList;//班级列表
+    private ListView lvClassList;//班级列表
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.layout_aty_choose_module);
 
-        classesList = new ArrayList<Classes>();
+        classList = new ArrayList<Classes>();
+        // 初始化服务器请求操作
+        requestUtils = new ServerRequestUtils(this);
+        vUtils = new ViewUtils(this);
+        uiHandler = new Handler(getMainLooper());
 
         initView();
+
+        requestClassFromServer();
     }
 
     private void initView() {
@@ -68,16 +89,18 @@ public class ChooseModuleAty extends Activity {
         style1.setSpan(new ForegroundColorSpan(Color.parseColor("#FE710A")), 0, 4, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
         tvMsg06.setText(style1);
 
+        ivNoData = (ImageView) findViewById(R.id.iv_no_data_layout_aty_module);
+        ivNoData.setVisibility(View.GONE);
+        ivNoData.setOnClickListener(new Listeners());
+
         //班级列表
-        lvClassesList = (ListView) findViewById(R.id.lv_classes_list_layout_aty_choose_module);
-        classesList = getClassesList();
-        setLvClassesListAdapter();
-        setLvClassesListListeners();
-
-
+        lvClassList = (ListView) findViewById(R.id.lv_class_list_layout_aty_choose_module);
+//        classList = getClassList();
+//        setLvClassListAdapter();
+        setLvClassListListeners();
     }
 
-    private List<Classes> getClassesList() {
+    private List<Classes> getClassList() {
         List<Classes> list = new ArrayList<Classes>();
         for (int i = 0; i < 3; i++) {
             Classes classes = new Classes();
@@ -89,23 +112,125 @@ public class ChooseModuleAty extends Activity {
         return list;
     }
 
+
+    private void requestClassFromServer() {
+        requestUtils.request("getClassList", "", "加载班级数据中", ServerRequestUtils.REQUEST_SHORT_TIME, new ServerRequestUtils.OnServerRequestListener2() {
+            @Override
+            public void onFailure(final String msg) {
+                uiHandler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        if (!TextUtils.isEmpty(msg)) {
+                            Toast.makeText(ChooseModuleAty.this, msg + "加载失败，请点击图片重试",
+                                    Toast.LENGTH_SHORT).show();
+                        } else {
+                            Toast.makeText(ChooseModuleAty.this, "获取班级列表失败，请点击图片重试",
+                                    Toast.LENGTH_SHORT).show();
+                        }
+
+                        ivNoData.setVisibility(View.VISIBLE);
+                        lvClassList.setVisibility(View.GONE);
+
+                        vUtils.dismissDialog();
+                    }
+                });
+            }
+
+            @Override
+            public void onResponse(String msg, JSONArray data, String count) {
+                //暂无数据，用假数据代替，2019.11.20
+//                data = new JSONArray();
+//                try {
+//                    JSONObject obj1 = new JSONObject();
+//                    obj1.put("DataID", 1);
+//                    obj1.put("DataName", "高一(1)班");
+//
+//                    JSONObject obj2 = new JSONObject();
+//                    obj2.put("DataID", 2);
+//                    obj2.put("DataName", "高一(2)班");
+//
+//                    data.put(obj1);
+//                    data.put(obj2);
+//                } catch (JSONException e) {
+//                    e.printStackTrace();
+//                }
+
+
+                if (data != null) {
+                    List<Classes> list = com.alibaba.fastjson.JSON.parseArray(data.toString(), Classes.class);
+                    if (list != null) {
+                        if (list.size() == 0) {
+                            uiHandler.post(new Runnable() {
+                                @Override
+                                public void run() {
+                                    ivNoData.setVisibility(View.VISIBLE);
+                                    lvClassList.setVisibility(View.GONE);
+
+                                    Toast.makeText(ChooseModuleAty.this, "暂无可选择的班级，可返回切换账号试试", Toast.LENGTH_SHORT).show();
+                                }
+                            });
+                        } else {
+                            if (classList.size() > 0) {
+                                classList.clear();
+                            }
+                            classList.addAll(list);
+                        }
+
+                        uiHandler.post(new Runnable() {
+                            @Override
+                            public void run() {
+                                ivNoData.setVisibility(View.GONE);
+                                lvClassList.setVisibility(View.VISIBLE);
+
+                                vUtils.dismissDialog();
+
+                                setLvClassListAdapter();
+                            }
+                        });
+                    }
+
+
+                    //把班级jsonArray存入首选项文件
+                    PreferencesUtils.saveInfoToPreferences(ChooseModuleAty.this, ConstantsForPreferencesUtils.CLASS_LIST_JSONARR, data.toString());
+                } else {
+                    uiHandler.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            ivNoData.setVisibility(View.VISIBLE);
+                            lvClassList.setVisibility(View.GONE);
+
+                            vUtils.dismissDialog();
+                        }
+                    });
+                }
+
+                uiHandler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        vUtils.dismissDialog();
+                    }
+                });
+            }
+        });
+    }
+
     /**
      * 设置错题本适配器
      */
-    private void setLvClassesListAdapter() {
+    private void setLvClassListAdapter() {
         if (cAdapter == null) {
-            cAdapter = new Classes01Adapter(this, classesList);
-            lvClassesList.setAdapter(cAdapter);
+            cAdapter = new Classes01Adapter(this, classList);
+            lvClassList.setAdapter(cAdapter);
         } else {
             cAdapter.notifyDataSetChanged();
         }
     }
 
-    private void setLvClassesListListeners() {
-        lvClassesList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+    private void setLvClassListListeners() {
+        lvClassList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Classes classes = classesList.get(position);
+                Classes classes = classList.get(position);
                 if (classes != null) {
                     classes.setHasChoiced(true);
                 }
@@ -114,7 +239,7 @@ public class ChooseModuleAty extends Activity {
 
                 rlIntoClass.performClick();
                 //不抢焦点
-                lvClassesList.setSelected(false);
+                lvClassList.setSelected(false);
 
                 Intent intent = new Intent(ChooseModuleAty.this, MainActivity.class);
                 startActivity(intent);
@@ -143,6 +268,17 @@ public class ChooseModuleAty extends Activity {
                     startActivity(intent);
 
                     finish();
+
+                    break;
+
+                case R.id.iv_no_data_layout_aty_module://刷新班级列表
+                    if (classList != null && classList.size() > 0) {
+                        classList.clear();
+                    }
+
+                    vUtils.showLoadingDialog("");
+//                    showLoadingDialog("正在跳转");
+                    requestClassFromServer();
 
                     break;
             }

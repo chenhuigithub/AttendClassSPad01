@@ -31,7 +31,7 @@
             android:layout_centerVertical="true"
             android:layout_marginLeft="@dimen/dimen_padding_004"
             android:layout_toRightOf="@id/iv_start_layout_v_classes01"
-            android:text="九年级（1）班"
+            android:text="xx班"
             android:textColor="@color/light_blue02"
             android:textSize="@dimen/dimen_text_008"></TextView>
 

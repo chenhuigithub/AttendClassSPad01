@@ -173,7 +173,8 @@ public class ErrorBookFg extends BaseNotPreLoadFg implements InterfacesCallback.
             Test q = new Test();
             q.setId("qid" + j);
             q.setContent("1.以下历史事件中，与关羽无关的是（）：\nＡ.单刀赴会　 Ｂ.水淹七军　 Ｃ.大意失荆州　 Ｄ.七擒七纵 \n“东风不与周郎便，铜雀春深锁二乔”。这首诗的作者生活的年代与诗中所描述的历史事件发生的年代大约相隔了（）： \nＡ.400年 　Ｂ.500年　 Ｃ.600年   D.800年 \n中秋节吃月饼最初的兴起是为了：\nA.纪念屈原   B.推翻元朝统治   C.南宋人民纪念抗金将士   D.由长娥奔月的传说而来");
-            q.setAnswer("D C B");
+            q.setUserAnswer("D C B");
+            q.setRightAnswer("D C B");
             q.setAnalysis("七擒七纵，七擒孟获，又称南中平定战，是建兴三年蜀汉丞相诸葛亮对南中发动平定南中的战争。当时朱褒、雍闿、高定等人叛变，南中豪强孟获亦有参与，最后诸葛亮亲率大军南下，平定南中。");
             if (paper != null) {
                 q.setTitle("错题本:" + paper.getName());

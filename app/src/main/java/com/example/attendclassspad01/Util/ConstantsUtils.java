@@ -153,4 +153,5 @@ public class ConstantsUtils {
      */
     public static final int TAKE_PHOTO = 1;
 
+    public static final String BUNDLE_FRAGMENTS_KEY = "android:support:fragments";
 }

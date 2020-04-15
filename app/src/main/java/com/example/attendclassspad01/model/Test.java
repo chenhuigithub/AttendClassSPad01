@@ -8,12 +8,13 @@ import java.io.Serializable;
  * @author chenhui 2019.04.04
  */
 public class Test implements Serializable {
-    private String id;// 唯一ID
-    private String title;// 题目标题
-    private String content;// 题目内容
-    private String answer;// 答案
-    private String analysis;// 解析
-    private boolean isChoiced;// 是否已被选中
+    private String id = "";// 唯一ID
+    private String title = "";// 题目标题
+    private String content = "";// 题目内容
+    private String userAnswer = "";// 用户答案id
+    private String rightAnswer = "";// 正确答案id
+    private String analysis = "";// 解析
+    private boolean isChoiced = false;// 是否已被选中
 
     public String getId() {
         return id;
@@ -39,12 +40,20 @@ public class Test implements Serializable {
         this.content = content;
     }
 
-    public String getAnswer() {
-        return answer;
+    public String getUserAnswer() {
+        return userAnswer;
     }
 
-    public void setAnswer(String answer) {
-        this.answer = answer;
+    public void setUserAnswer(String userAnswer) {
+        this.userAnswer = userAnswer;
+    }
+
+    public String getRightAnswer() {
+        return rightAnswer;
+    }
+
+    public void setRightAnswer(String rightAnswer) {
+        this.rightAnswer = rightAnswer;
     }
 
     public String getAnalysis() {

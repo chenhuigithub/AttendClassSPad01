@@ -94,7 +94,7 @@
                     </LinearLayout>
 
                     <ListView
-                        android:id="@+id/lv_classes_list_layout_aty_choose_module"
+                        android:id="@+id/lv_class_list_layout_aty_choose_module"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_above="@id/ll_msg06_layout_aty_choose_module"
@@ -105,6 +105,13 @@
                         android:fadingEdgeLength="0dp"
                         android:listSelector="#00000000"></ListView>
                 </RelativeLayout>
+
+                <ImageView
+                    android:id="@+id/iv_no_data_layout_aty_module"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/no_data"
+                    android:clickable="true" />
             </LinearLayout>
         </LinearLayout>
 

@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -17,6 +18,8 @@ import java.util.List;
 public abstract class BaseListAdapter<T> extends BaseAdapter {
     protected Context context;
     private List<T> dataList;
+
+    private HashMap lmap = new HashMap();
 
     public BaseListAdapter(Context context, List<T> dataList) {
         this.context = context;
@@ -49,8 +52,9 @@ public abstract class BaseListAdapter<T> extends BaseAdapter {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         View resultView = convertView;
-        if (resultView == null) {
+        if (resultView == null ) {
             resultView = LayoutInflater.from(this.context).inflate(this.getLayoutResID(), null);
+//            lmap.put(position, resultView);
         }
         T dataObj = getItem(position);
         if ((resultView != null) && (dataObj != null)) {

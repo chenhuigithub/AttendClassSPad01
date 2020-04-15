@@ -293,15 +293,16 @@ public class LoginActivity extends Activity {
                                 Toast.makeText(LoginActivity.this, "登录成功",
                                         Toast.LENGTH_SHORT).show();
 
-                                PreferencesUtils.saveInfoToPreferences(LoginActivity.this,
-                                        ConstantsUtils.HAS_LOGINED, true);
-
-                                if (data != null) {
-                                    dealWithData(data);
-                                }
                                 vUtils.dismissDialog();
                             }
                         });
+
+                        if (data != null) {
+                            dealWithData(data);
+                        }
+
+                        PreferencesUtils.saveInfoToPreferences(LoginActivity.this,
+                                ConstantsUtils.HAS_LOGINED, true);
                     }
 
                     @Override
@@ -356,7 +357,14 @@ public class LoginActivity extends Activity {
             PreferencesUtils.saveInfoToPreferences(this,
                     ConstantsForPreferencesUtils.USER_HEAD_PIC_URL, headPicUrl);
 
-            pUtils.getBitmap(headPicUrl, uiHandler);
+            final String finalHeadPicUrl = headPicUrl;
+            uiHandler.post(new Runnable() {
+                @Override
+                public void run() {
+                    pUtils.getBitmap(finalHeadPicUrl, uiHandler);
+                }
+            });
+
 
             // 广播
             intent2.putExtra(ConstantsUtils.USER_HEAD_PIC_URL,
@@ -501,17 +509,17 @@ public class LoginActivity extends Activity {
             int id = v.getId();
             switch (id) {
                 case R.id.tv_login_layout_aty_login://登录
-//                    if (isCanLogin()) {
-//                        vUtils.showLoadingDialog("");
-//
-//                        loginToServer();
-//                    }
+                    if (isCanLogin()) {
+                        vUtils.showLoadingDialog("");
+
+                        loginToServer();
+                    }
 
                     //绕过与服务器交互实现临时跳转，2020.02.28 chenhui
-                    Intent intent = new Intent(LoginActivity.this, ChooseModuleAty.class);
-                    startActivity(intent);
-
-                    finish();
+//                    Intent intent = new Intent(LoginActivity.this, ChooseModuleAty.class);
+//                    startActivity(intent);
+//
+//                    finish();
 
                     break;
                 case R.id.ll_user_name_layout_aty_login:// 用户名

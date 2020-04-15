@@ -95,6 +95,50 @@
             </RelativeLayout>
 
             <RelativeLayout
+                android:id="@+id/rl_wrapper_test_layout_aty_main"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <View
+                    android:id="@+id/v_cursor_test_layout_aty_main"
+                    android:layout_width="@dimen/dimen_height_001"
+                    android:layout_height="@dimen/dimen_height_011"
+                    android:layout_alignParentLeft="true"
+                    android:layout_centerVertical="true"
+                    android:background="@color/blue"
+                    android:textSize="@dimen/dimen_text_007" />
+
+                <LinearLayout
+                    android:id="@+id/ll_wrapper_test_layout_aty_main"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:gravity="center"
+                    android:orientation="vertical"
+                    android:paddingTop="@dimen/dimen_padding_006"
+                    android:paddingBottom="@dimen/dimen_padding_006">
+
+                    <ImageView
+                        android:id="@+id/iv_test_layout_aty_main"
+                        android:layout_width="@dimen/dimen_height_006"
+                        android:layout_height="@dimen/dimen_height_006"
+                        android:background="@drawable/selector_for_error_book"
+                        android:scaleType="fitXY" />
+
+                    <TextView
+                        android:id="@+id/tv_test_layout_aty_main"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/dimen_height_002"
+                        android:text="随堂测试"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/dimen_text_007" />
+                </LinearLayout>
+            </RelativeLayout>
+
+            <RelativeLayout
                 android:id="@+id/rl_wrapper_error_book_layout_aty_main"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

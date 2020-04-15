@@ -1,8 +1,14 @@
 package com.example.attendclassspad01.adapter;
 
 import android.content.Context;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.BaseAdapter;
+import android.widget.CheckBox;
+import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.fragment.app.FragmentActivity;
 
@@ -14,18 +20,22 @@ import java.util.List;
 /**
  * 试题列表适配器
  */
-public class TestQuestionAdapter01 extends BaseListAdapter<Test> {
+public class TestQuestionAdapter01 extends BaseAdapter {
+    private Context context;
+    private List<Test> testList;//题目
     private int type = 0;//默认是答题状态（1为查看答案解析状态,2为答题解析状态，显示柱状图）
     private boolean showCbox;//是否选中
 
     public TestQuestionAdapter01(Context context, List<Test> dataList, int type) {
-        super(context, dataList);
+        this.context = context;
+        this.testList = dataList;
         this.type = type;
     }
 
 
     public TestQuestionAdapter01(Context context, List<Test> dataList, int type, FragmentActivity activity) {
-        super(context, dataList);
+        this.context = context;
+        this.testList = dataList;
         this.type = type;
 
 //        manager = activity.getSupportFragmentManager();//FragmentManager调用v4包内的
@@ -52,16 +62,60 @@ public class TestQuestionAdapter01 extends BaseListAdapter<Test> {
     }
 
 
-    @Override
-    protected int getLayoutResID() {
-        return R.layout.layout_fg_test01;
-    }
-
-    @Override
     protected void doAssignValueForView(int position, View resultView, final Test dataObj) {
         //题目
         TextView tvQuestion = (TextView) resultView.findViewById(R.id.tv_content_layout_fg_test);
         tvQuestion.setText(dataObj.getContent());
+
+        final LinearLayout llOptions = resultView.findViewById(R.id.ll_options_layout_fg_test01);
+//        final LinearLayout llOptionA = resultView.findViewById(R.id.ll_option_a_layout_fg_test01);
+//        final CheckBox cboxA = resultView.findViewById(R.id.cbox_option_a_layout_fg_test01);
+//        final LinearLayout llOptionB = resultView.findViewById(R.id.ll_option_b_layout_fg_test01);
+//        final LinearLayout llOptionC = resultView.findViewById(R.id.ll_option_c_layout_fg_test01);
+//        final LinearLayout llOptionD = resultView.findViewById(R.id.ll_option_d_layout_fg_test01);
+
+//        llOptionA.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                if (!cboxA.isChecked()) {
+//                    cboxA.setChecked(true);
+//                } else {
+//                    cboxA.setChecked(false);
+//                }
+//
+//                Toast.makeText(context, "点击了" + dataObj.getContent(), Toast.LENGTH_SHORT).show();
+//            }
+//        });
+//
+//        llOptionB.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                CheckBox cbox = view.findViewById(R.id.cbox_option_b_layout_fg_test01);
+//                if (!cbox.isChecked()) {
+//                    cbox.setChecked(true);
+//                } else {
+//                    cbox.setChecked(false);
+//                }
+//            }
+//        });
+
+        for (int i = 0; i < llOptions.getChildCount(); i++) {
+            View vChild = llOptions.getChildAt(i);
+            if (vChild instanceof LinearLayout) {
+                final LinearLayout llChild = (LinearLayout) vChild;
+                llChild.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        CheckBox cbox = view.findViewWithTag("cbox");
+                        if (!cbox.isChecked()) {
+                            cbox.setChecked(true);
+                        } else {
+                            cbox.setChecked(false);
+                        }
+                    }
+                });
+            }
+        }
 
         //柱状图
 //        HistogramView vGram = (HistogramView) resultView.findViewById(R.id.gramv_layout_fg_test_choice);
@@ -137,7 +191,7 @@ public class TestQuestionAdapter01 extends BaseListAdapter<Test> {
         }*/
 
 
-    //查看解析/收回解析
+        //查看解析/收回解析
 //    final TextView tvSeeAnalysis = (TextView) resultView.findViewById(R.id.tv_see_analysis_layout_fg_test);
 //        tvSeeAnalysis.setOnClickListener(new View.OnClickListener()
 //    {
@@ -153,37 +207,97 @@ public class TestQuestionAdapter01 extends BaseListAdapter<Test> {
 //    }
 //    });
 
-}
+    }
 
-/**
- * 控件监听
- */
-private class Listeners implements View.OnClickListener {
     @Override
-    public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.ll_wrapper_a_layout_v_histogram_answer_analysis://A选项
-                doAfterClickOption((TextView) v.getTag(), "学员：燕小乙、林冲、陆逊、鲁肃、金角大王、吕小布、周公瑾、李师师");
+    public int getCount() {
+        return testList.size();
+    }
 
-                break;
-            case R.id.ll_wrapper_b_layout_v_histogram_answer_analysis://B选项
-                doAfterClickOption((TextView) v.getTag(), "学员：武松、关胜、扈三娘、王朗、典韦、荀文若");
+    @Override
+    public Object getItem(int i) {
+        return testList.get(i);
+    }
 
-                break;
-            case R.id.ll_wrapper_c_layout_v_histogram_answer_analysis://C选项
-                doAfterClickOption((TextView) v.getTag(), "学员：宋公明、关胜");
+    @Override
+    public long getItemId(int i) {
+        return i;
+    }
 
-                break;
-            case R.id.ll_wrapper_d_layout_v_histogram_answer_analysis://D选项
-                doAfterClickOption((TextView) v.getTag(), "学员：曹孟德、袁本初、陈公台、郭奉孝");
+    @Override
+    public View getView(int i, View view, ViewGroup viewGroup) {
+        View resultView = LayoutInflater.from(context).inflate(R.layout.layout_fg_test01, null);
 
-                break;
-            case R.id.ll_wrapper_unselected_layout_v_histogram_answer_analysis://未选
-                doAfterClickOption((TextView) v.getTag(), "学员：无");
+        final Test test = testList.get(i);
+        if (test != null) {
+            //题目
+            TextView tvQuestion = (TextView) resultView.findViewById(R.id.tv_content_layout_fg_test);
+            tvQuestion.setText(test.getContent());
 
-                break;
+            final LinearLayout llOptions = resultView.findViewById(R.id.ll_options_layout_fg_test01);
+
+            for (int j = 0; j < llOptions.getChildCount(); j++) {
+                View vChild = llOptions.getChildAt(j);
+                if (vChild instanceof LinearLayout) {
+                    LinearLayout llChild = (LinearLayout) vChild;
+                    final CheckBox cbox = llChild.findViewWithTag("cbox");
+                    cbox.setTag(R.id.tag01,String.valueOf(j));
+                    if (test.getUserAnswer().equals(String.valueOf(j))) {
+                        cbox.setChecked(true);
+                    } else {
+                        cbox.setChecked(false);
+                    }
+
+                    llChild.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            if (!cbox.isChecked()) {
+//                                cbox.setChecked(true);
+                                test.setUserAnswer(cbox.getTag(R.id.tag01).toString());
+                            } else {
+//                                cbox.setChecked(false);
+                                test.setChoiced(false);
+                            }
+                            notifyDataSetChanged();
+                        }
+                    });
+                }
+            }
         }
 
+
+        return resultView;
     }
-}
+
+    /**
+     * 控件监听
+     */
+    private class Listeners implements View.OnClickListener {
+        @Override
+        public void onClick(View v) {
+            switch (v.getId()) {
+                case R.id.ll_wrapper_a_layout_v_histogram_answer_analysis://A选项
+                    doAfterClickOption((TextView) v.getTag(), "学员：燕小乙、林冲、陆逊、鲁肃、金角大王、吕小布、周公瑾、李师师");
+
+                    break;
+                case R.id.ll_wrapper_b_layout_v_histogram_answer_analysis://B选项
+                    doAfterClickOption((TextView) v.getTag(), "学员：武松、关胜、扈三娘、王朗、典韦、荀文若");
+
+                    break;
+                case R.id.ll_wrapper_c_layout_v_histogram_answer_analysis://C选项
+                    doAfterClickOption((TextView) v.getTag(), "学员：宋公明、关胜");
+
+                    break;
+                case R.id.ll_wrapper_d_layout_v_histogram_answer_analysis://D选项
+                    doAfterClickOption((TextView) v.getTag(), "学员：曹孟德、袁本初、陈公台、郭奉孝");
+
+                    break;
+                case R.id.ll_wrapper_unselected_layout_v_histogram_answer_analysis://未选
+                    doAfterClickOption((TextView) v.getTag(), "学员：无");
+
+                    break;
+            }
+
+        }
+    }
 }

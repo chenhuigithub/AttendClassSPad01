@@ -54,8 +54,6 @@ public class ClassesFg extends BaseNotPreLoadFg {
         rlSwitchClass.setOnClickListener(new Listeners());
         iv = (ImageView) v.findViewById(R.id.iv_layout_fg_classes);
         iv.setOnClickListener(new Listeners());
-
-
     }
 
     /**
@@ -96,9 +94,9 @@ public class ClassesFg extends BaseNotPreLoadFg {
 
                     break;
                 case R.id.iv_layout_fg_classes://图片
-                    iv.setVisibility(View.GONE);
-                    ClassesAnswerQuestionFg aqFg = new ClassesAnswerQuestionFg();
-                    showContent(aqFg);
+//                    iv.setVisibility(View.GONE);
+//                    ClassroomTestFg aqFg = new ClassroomTestFg();
+//                    showContent(aqFg);
 
                     break;
             }

@@ -2,9 +2,9 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/ll_all_layout_fg_test_choice"
     android:layout_width="match_parent"
-    android:padding="@dimen/dimen_padding_002"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:padding="@dimen/dimen_padding_002">
 
     <ScrollView
         android:layout_width="match_parent"
@@ -14,185 +14,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
-
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="top"
-                android:gravity="top"
-                android:orientation="horizontal"
-                android:visibility="visible">
-
-
-                <!--对错结果-->
-                <TextView
-                    android:id="@+id/tv_content_layout_fg_test"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:clickable="true"
-                    android:layout_marginStart="@dimen/dimen_padding_006"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginEnd="@dimen/dimen_padding_006"
-                    android:layout_marginRight="@dimen/dimen_padding_006"
-                    android:text="1.以下历史事件中，与关羽无关的是（）：\nＡ：单刀赴会　Ｂ：水淹七军　Ｃ：大意失荆州　Ｄ：七擒七纵\n2：“东风不与周郎便，铜雀春深锁二乔”。这首诗的作者生活的年代与诗中所描述的历史事件发生的年代大约相隔了（）： \nＡ：４００年　Ｂ：５００年　 Ｃ：６００年　Ｄ：８００年\n3、&apos;中秋节&apos;吃月饼最初的兴起是为了：\nA.纪念屈原                 B.推翻元朝统治       C.南宋人民纪念抗金将士     D.由长娥奔月的传说而来"
-                    android:textColor="@color/color_text_content"
-                    android:textSize="@dimen/dimen_text_008" />
-            </RelativeLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:visibility="gone"
-                android:layout_height="wrap_content"
-                android:background="@color/light_blue06"
-                android:gravity="center_vertical"
-                android:orientation="horizontal">
-
-                <LinearLayout
-                    android:layout_width="0px"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="5"
-                    android:gravity="center_vertical"
-                    android:orientation="horizontal"
-                    android:padding="@dimen/dimen_padding_006">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="难度: 0.85  组卷: 0  题型: 句子默写  更新: 2020/2/22"
-                        android:textColor="@color/black"
-                        android:textSize="@dimen/dimen_text_006" />
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="0px"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="5"
-                    android:gravity="center_vertical|right"
-                    android:orientation="horizontal">
-
-                    <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:gravity="center"
-                        android:orientation="horizontal"
-                        android:padding="@dimen/dimen_padding_006">
-
-                        <ImageView
-                            android:layout_width="15dp"
-                            android:layout_height="15dp"
-                            android:background="@mipmap/ic_launcher"
-                            android:scaleType="fitXY" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginLeft="@dimen/dimen_padding_002"
-                            android:text="相似题"
-                            android:textColor="@color/blue3"
-                            android:textSize="@dimen/dimen_text_006" />
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:gravity="center"
-                        android:orientation="horizontal"
-                        android:padding="@dimen/dimen_padding_005">
-
-                        <ImageView
-                            android:layout_width="15dp"
-                            android:layout_height="15dp"
-                            android:background="@mipmap/ic_launcher"
-                            android:scaleType="fitXY" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginLeft="@dimen/dimen_padding_002"
-                            android:text="纠错"
-                            android:textColor="@color/blue3"
-                            android:textSize="@dimen/dimen_text_006" />
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:gravity="center"
-                        android:orientation="horizontal"
-                        android:padding="@dimen/dimen_padding_005">
-
-                        <ImageView
-                            android:layout_width="15dp"
-                            android:layout_height="15dp"
-                            android:background="@mipmap/ic_launcher"
-                            android:scaleType="fitXY" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginLeft="@dimen/dimen_padding_002"
-                            android:text="收藏"
-                            android:textColor="@color/blue3"
-                            android:textSize="@dimen/dimen_text_006" />
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:gravity="center"
-                        android:orientation="horizontal"
-                        android:padding="@dimen/dimen_padding_005">
-
-                        <ImageView
-                            android:layout_width="15dp"
-                            android:layout_height="15dp"
-                            android:background="@mipmap/ic_launcher"
-                            android:scaleType="fitXY" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginLeft="@dimen/dimen_padding_002"
-                            android:text="详情"
-                            android:textColor="@color/blue3"
-                            android:textSize="@dimen/dimen_text_006" />
-                    </LinearLayout>
-
-                    <TextView
-                        android:id="@+id/tv_remove_layout_fg_test"
-                        style="@style/SingBgForRectangle"
-                        android:layout_margin="@dimen/dimen_padding_004"
-                        android:background="@color/blue3"
-                        android:text="移出错题本"
-                        android:textColor="@color/white"
-                        android:textSize="@dimen/dimen_text_006" />
-                </LinearLayout>
-            </LinearLayout>
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_marginLeft="10dp"
-                android:layout_marginRight="10dp"
-                android:background="@color/light_grey"
-                android:visibility="gone" />
-
-            <com.example.attendclassspad01.view.HistogramView
-                android:id="@+id/gramv_layout_fg_test"
-                android:layout_width="150dp"
-                android:layout_height="150dp"
-                android:visibility="gone" />
-
-            <!--柱状图-->
-            <RelativeLayout
-                android:id="@+id/rl_wrapper_histogram_layout_fg_test"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="@dimen/dimen_padding_006"
-                android:visibility="gone" />
-
-
 
             <LinearLayout
                 android:id="@+id/ll_wrapper_see_answer_analysis_layout_fg_test"
@@ -229,16 +50,171 @@
                     android:textSize="@dimen/dimen_text_008" />
             </LinearLayout>
 
+
+            <RelativeLayout
+                android:id="@+id/rl_wrapper_histogram_layout_fg_test"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/dimen_padding_006"
+                android:visibility="gone" />
+
+            <!--柱状图-->
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="top"
+                android:gravity="top"
+                android:orientation="horizontal"
+                android:visibility="visible">
+
+
+                <LinearLayout
+                    android:id="@+id/ll_options_layout_fg_test01"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/tv_content_layout_fg_test"
+                    android:layout_marginTop="@dimen/dimen_padding_005"
+                    android:clickable="false"
+                    android:orientation="vertical"
+                    android:padding="@dimen/dimen_padding_005">
+
+                    <LinearLayout
+                        android:id="@+id/ll_option_a_layout_fg_test01"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:clickable="true"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
+
+                        <CheckBox
+                            android:id="@+id/cbox_option_a_layout_fg_test01"
+                            android:layout_width="15dp"
+                            android:layout_height="15dp"
+                            android:background="@drawable/selector_for_cbox"
+                            android:button="@null"
+                            android:tag="cbox"></CheckBox>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="@dimen/dimen_padding_005"
+                            android:text="Ａ：单刀赴会"
+                            android:textColor="@color/color_text_content"
+                            android:textSize="@dimen/dimen_text_007"></TextView>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/ll_option_b_layout_fg_test01"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/dimen_padding_005"
+                        android:clickable="true"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
+
+                        <CheckBox
+                            android:id="@+id/cbox_option_b_layout_fg_test01"
+                            android:layout_width="15dp"
+                            android:layout_height="15dp"
+                            android:background="@drawable/selector_for_cbox"
+                            android:button="@null"
+                            android:tag="cbox"></CheckBox>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="@dimen/dimen_padding_005"
+                            android:text="Ｂ：水淹七军"
+                            android:textColor="@color/color_text_content"
+                            android:textSize="@dimen/dimen_text_007"></TextView>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/ll_option_c_layout_fg_test01"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/dimen_padding_005"
+                        android:clickable="true"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
+
+                        <CheckBox
+                            android:id="@+id/cbox_option_c_layout_fg_test01"
+                            android:layout_width="15dp"
+                            android:layout_height="15dp"
+                            android:background="@drawable/selector_for_cbox"
+                            android:button="@null"
+                            android:tag="cbox"></CheckBox>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="@dimen/dimen_padding_005"
+                            android:text="C：大意失荆州"
+                            android:textColor="@color/color_text_content"
+                            android:textSize="@dimen/dimen_text_007"></TextView>
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/ll_option_d_layout_fg_test01"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/dimen_padding_005"
+                        android:clickable="true"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
+
+                        <CheckBox
+                            android:id="@+id/cbox_option_d_layout_fg_test01"
+                            android:layout_width="15dp"
+                            android:layout_height="15dp"
+                            android:background="@drawable/selector_for_cbox"
+                            android:button="@null"
+                            android:tag="cbox"></CheckBox>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="@dimen/dimen_padding_005"
+                            android:text="D：七擒七纵"
+                            android:textColor="@color/color_text_content"
+                            android:textSize="@dimen/dimen_text_007"></TextView>
+                    </LinearLayout>
+                </LinearLayout>
+
+                <!--对错结果-->
+                <TextView
+                    android:id="@+id/tv_content_layout_fg_test"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/dimen_padding_006"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginEnd="@dimen/dimen_padding_006"
+                    android:layout_marginRight="@dimen/dimen_padding_006"
+                    android:clickable="true"
+                    android:text="1.以下历史事件中，与关羽无关的是（）："
+                    android:textColor="@color/color_text_content"
+                    android:textSize="@dimen/dimen_text_008" />
+            </RelativeLayout>
+
+
             <TextView
                 android:id="@+id/tv_analysis_layout_fg_test"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
-                android:visibility="gone"
                 android:layout_marginTop="@dimen/dimen_padding_005"
                 android:text="七擒七纵，七擒孟获，又称南中平定战，是建兴三年蜀汉丞相诸葛亮对南中发动平定南中的战争。当时朱褒、雍闿、高定等人叛变，南中豪强孟获亦有参与，最后诸葛亮亲率大军南下，平定南中。"
                 android:textColor="@color/color_text_additional"
-                android:textSize="@dimen/dimen_text_007" />
+                android:textSize="@dimen/dimen_text_007"
+                android:visibility="gone" />
+
+            <com.example.attendclassspad01.view.HistogramView
+                android:id="@+id/gramv_layout_fg_test"
+                android:layout_width="150dp"
+                android:layout_height="150dp"
+                android:visibility="gone" />
         </LinearLayout>
     </ScrollView>
 

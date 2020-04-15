@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:gravity="center_horizontal"
+    android:orientation="vertical">
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/dimen_padding_008">
+
+        <TextView
+            android:id="@+id/tv_num_layout_fg_classroom_test"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:text="2"
+            android:textColor="@color/color_text_title01"
+            android:textSize="@dimen/dimen_text_009"></TextView>
+
+        <TextView
+            android:id="@+id/tv_count_layout_fg_caq"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_toRightOf="@id/tv_num_layout_fg_classroom_test"
+            android:text="/5"
+            android:textColor="@color/color_text_title01"
+            android:textSize="@dimen/dimen_text_007"></TextView>
+
+        <TextView
+            android:id="@+id/tv_commit_layout_fg_classroom_test"
+            style="@style/SingBgForRectangle"
+            android:layout_alignParentRight="true"
+            android:background="@color/red03"
+            android:text="提交答案"
+            android:textColor="@color/white"></TextView>
+    </RelativeLayout>
+
+    <ListView
+        android:id="@+id/lv_question_layout_fg_classroom_test"
+        style="@style/NormalLv"
+        android:layout_marginTop="@dimen/dimen_padding_005"
+        android:background="@color/white"
+        android:divider="@color/white"
+        android:dividerHeight="@dimen/dimen_height_004"
+        android:visibility="visible" />
+
+
+
+
+</LinearLayout>
