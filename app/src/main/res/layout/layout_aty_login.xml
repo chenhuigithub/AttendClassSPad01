@@ -41,6 +41,7 @@
                 android:orientation="horizontal">
 
                 <ImageView
+                    android:id="@+id/iv_user_logo_layout_aty_login"
                     android:layout_width="60dp"
                     android:layout_height="60dp"
                     android:background="@drawable/student_logo" />
@@ -49,7 +50,7 @@
                     android:id="@+id/textView1"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="5dp"
+                    android:layout_marginLeft="@dimen/dimen_padding_005"
                     android:text="我的课堂"
                     android:textColor="#0A7CD1"
                     android:textSize="22sp" />
@@ -173,10 +174,10 @@
                 android:id="@+id/tv_login_layout_aty_login"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/dimen_padding_003"
                 android:layout_marginTop="@dimen/dimen_padding_008"
                 android:background="@drawable/selector_for_login"
                 android:paddingLeft="20dp"
-                android:layout_marginLeft="@dimen/dimen_padding_003"
                 android:paddingTop="5dp"
                 android:paddingRight="20dp"
                 android:paddingBottom="5dp"

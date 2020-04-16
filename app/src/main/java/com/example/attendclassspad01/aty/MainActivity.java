@@ -1,10 +1,17 @@
 package com.example.attendclassspad01.aty;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.res.Resources;
+import android.graphics.Bitmap;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Message;
 import android.text.TextUtils;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -12,11 +19,13 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
 import com.example.attendclassspad01.R;
 import com.example.attendclassspad01.Util.ActivityUtils;
@@ -36,7 +45,9 @@ import com.example.attendclassspad01.model.Classes;
  * @author chenhui_2020.02.25
  */
 public class MainActivity extends FragmentActivity {
+    private long exitTime = 0;
     private boolean hasLogined = false;//是否已登录，默认为未登录
+
 
     private Classes classes;//班级
 
@@ -44,6 +55,8 @@ public class MainActivity extends FragmentActivity {
     private Resources res;
     private PicFormatUtils pUtils;// 图片工具
     private Handler uiHandler;// 主线程
+    private LocalBroadcastManager broadcastManager;// 广播接收
+    private BroadcastReceiver receiver;// 广播
 
     private ImageView ivUserLogo;//头像
     private TextView tvUserName;//用户名
@@ -103,12 +116,16 @@ public class MainActivity extends FragmentActivity {
         ctFg = new ClassroomTestFg();
         eFg = new ErrorBookFg();
 
+        initHandler();
+
         initView();
         initFg();
 
-        rlClasses.performClick();
+        initBroadcastReceiver();
 
         checkIfHasLogined();
+
+        rlClasses.performClick();
     }
 
     private void initView() {
@@ -159,6 +176,129 @@ public class MainActivity extends FragmentActivity {
     }
 
     /**
+     * 监听
+     */
+    private void initBroadcastReceiver() {
+        // 注册广播接收
+        broadcastManager = LocalBroadcastManager.getInstance(this);
+
+        IntentFilter filter = new IntentFilter();
+//        filter.addAction(ConstantsUtils.ACQUIRE_MATERIAL_INFO);// 获取教材信息
+        filter.addAction(ConstantsUtils.REFRESH_USER_INFO);//刷新用户信息
+        filter.addAction(ConstantsUtils.CLOSE_APP);//关闭应用
+
+        receiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                String action = intent.getAction();
+                Bundle bundle = intent.getExtras();
+                if (bundle != null) {
+                    switch (bundle.getInt(ConstantsUtils.INTENT)) {
+                        case ConstantsUtils.INTENT01: {//跳转至班级分页
+//                            cFg = new ClassesFg();
+//                            callbackForClass = (InterfacesCallback.ICanKnowSth11) cFg;
+//                            showFragment(cFg);
+                        }
+
+                        case ConstantsUtils.INTENT02: {//跳转至上课分页
+//                            showFragment(aFg);
+                        }
+
+                        case ConstantsUtils.INTENT03: {//跳转至测试分页
+//                            showFragment(tFg);
+                        }
+                    }
+                }
+
+//                if (ConstantsUtils.ACQUIRE_MATERIAL_INFO.equals(action)) {// 获取教材信息
+//                    if (bundle == null) {
+//                        return;
+//                    }
+//                    // 学段ID
+//                    String periodID = bundle
+//                            .getString(ConstantsUtils.PERIOD_ID);
+//                    if (!ValidateFormatUtils.isEmpty(periodID)) {
+//                        MainActivity.this.periodIDCurr = periodID;
+//                    }
+//                    // 学科ID
+//                    String subjectID = bundle
+//                            .getString(ConstantsUtils.SUBJECT_ID);
+//                    if (!ValidateFormatUtils.isEmpty(subjectID)) {
+//                        MainActivity.this.subjectIDCurr = subjectID;
+//                    }
+//                }else
+                if (ConstantsUtils.REFRESH_USER_INFO.equals(action)) {//刷新用户信息
+                    if (bundle == null) {
+                        return;
+                    }
+
+                    Boolean hasLogined1 = bundle.getBoolean(ConstantsUtils.HAS_LOGINED);//是否登录的标志
+                    if (hasLogined1 != null) {
+                        hasLogined = hasLogined1;
+
+                        if (hasLogined) {//已登录
+                            setLogined();
+                        } else {//未登录或退出登录
+                            setLogout();
+
+                            PreferencesUtils.saveInfoToPreferences(MainActivity.this, ConstantsUtils.HAS_LOGINED, false);
+                        }
+                    }
+                } else if (ConstantsUtils.CLOSE_APP.equals(action)) {//关闭应用
+                    finish();
+                }
+            }
+        };
+        broadcastManager.registerReceiver(receiver, filter);
+    }
+
+    /**
+     * 初始化线程
+     */
+    private void initHandler() {
+        uiHandler = new Handler(getMainLooper()) {
+            @Override
+            public void handleMessage(Message msg) {
+                super.handleMessage(msg);
+                switch (msg.what) {
+                    case PicFormatUtils.SIGN_FOR_BITMAP:
+                        vUtils.dismissDialog();
+
+                        // 接收老师头像并显示
+                        Object obj = msg.obj;
+                        if (obj != null && obj instanceof Bitmap) {
+                            Bitmap picBm = (Bitmap) obj;
+                            Drawable draw = pUtils.getDrawable(picBm);
+                            if (draw != null) {
+                                ivUserLogo.setImageDrawable(draw);
+                            } else {
+                                ivUserLogo.setImageDrawable(getResources()
+                                        .getDrawable(R.drawable.ic_launcher_background));
+                            }
+                        }
+                        ivUserLogo.setClickable(true);
+
+
+                        break;
+                }
+            }
+        };
+    }
+
+
+    /**
+     * 设置未登录状态
+     */
+    private void setLogout() {
+        tvUserName.setText("xx学生");
+//        btnLogin.setText("点击登录");
+        ivUserLogo.setImageDrawable(res.getDrawable(R.drawable.student_logo));
+
+        classes.setID("");
+        classes.setName("");
+    }
+
+    /**
      * 检查用户是否登录
      */
     private void checkIfHasLogined() {
@@ -176,7 +316,7 @@ public class MainActivity extends FragmentActivity {
     private void toLoginPage() {
         Intent intent = new Intent(MainActivity.this,
                 LoginActivity.class);
-//        intent.putExtra(ConstantsUtils.IS_SWITCH_LOGIN, true);
+//      intent.putExtra(ConstantsUtils.IS_SWITCH_LOGIN, true);
         startActivity(intent);
     }
 
@@ -184,35 +324,28 @@ public class MainActivity extends FragmentActivity {
      * 设置登录后的状态
      */
     private void setLogined() {
+        //用户名
         String loginName = PreferencesUtils.acquireInfoFromPreferences(MainActivity.this, ConstantsForPreferencesUtils.LOGIN_NAME);
+        if (!TextUtils.isEmpty(loginName)) {
+            tvUserName.setText(loginName);
+        }
+
         // 设置头像
         String headPicUrl = PreferencesUtils.acquireInfoFromPreferences(MainActivity.this, ConstantsForPreferencesUtils.USER_HEAD_PIC_URL);
-        setLogined(loginName, headPicUrl);
+        vUtils.showLoadingDialog("");
+        pUtils.getBitmap(headPicUrl, uiHandler);
 
+        //班级名
         String cName = PreferencesUtils.acquireInfoFromPreferences(MainActivity.this, ConstantsForPreferencesUtils.CLASS_NAME);
         if (!TextUtils.isEmpty(cName)) {
             classes.setName(cName);
         }
 
+        //班级ID
         String cID = PreferencesUtils.acquireInfoFromPreferences(MainActivity.this, ConstantsForPreferencesUtils.CLASS_ID);
         if (!TextUtils.isEmpty(cID)) {
             classes.setID(cID);
         }
-    }
-
-    /**
-     * 设置登录状态下的布局
-     *
-     * @param loginName
-     */
-    private void setLogined(String loginName, String headPicUrl) {
-        if (!TextUtils.isEmpty(loginName)) {
-            tvUserName.setText(loginName);
-        }
-
-        vUtils.showLoadingDialog("");
-
-        pUtils.getBitmap(headPicUrl, uiHandler);
     }
 
     /**
@@ -244,6 +377,39 @@ public class MainActivity extends FragmentActivity {
 
     protected boolean clearFragmentsTag() {
         return true;
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+
+        if (vUtils != null) {
+            vUtils.setCanShowDialog(false);
+        }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        if (vUtils != null) {
+            vUtils.setCanShowDialog(true);
+        }
+    }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK && event.getAction() == KeyEvent.ACTION_DOWN) {
+            if ((System.currentTimeMillis() - exitTime) > 2000) {
+                Toast.makeText(getApplicationContext(), "再按一次退出程序", Toast.LENGTH_SHORT).show();
+                exitTime = System.currentTimeMillis();
+            } else {
+                finish();
+                System.exit(0);
+            }
+            return true;
+        }
+        return super.onKeyDown(keyCode, event);
     }
 
     private class Listeners implements View.OnClickListener {
@@ -287,8 +453,6 @@ public class MainActivity extends FragmentActivity {
                     Intent intent = new Intent(MainActivity.this,
                             LoginActivity.class);
                     startActivity(intent);
-
-                    finish();
 
                     break;
                 case R.id.rl_wrapper_test_layout_aty_main://随堂测试

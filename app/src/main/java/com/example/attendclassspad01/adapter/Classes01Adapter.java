@@ -1,6 +1,7 @@
 package com.example.attendclassspad01.adapter;
 
 import android.content.Context;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -19,6 +20,7 @@ public class Classes01Adapter extends BaseListAdapter<Classes> {
     public Classes01Adapter(Context context, List<Classes> dataList) {
         super(context, dataList);
     }
+
 
     @Override
     protected int getLayoutResID() {

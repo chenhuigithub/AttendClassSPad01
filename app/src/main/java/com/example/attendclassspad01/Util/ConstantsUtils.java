@@ -154,4 +154,29 @@ public class ConstantsUtils {
     public static final int TAKE_PHOTO = 1;
 
     public static final String BUNDLE_FRAGMENTS_KEY = "android:support:fragments";
+
+    /**
+     * 跳转
+     */
+    public final static String INTENT = "INTENT";
+
+    /**
+     * 跳转至班级分页
+     */
+    public final static int INTENT01 = 10001;
+
+    /**
+     * 跳转至上课分页
+     */
+    public final static int INTENT02 = 10002;
+
+    /**
+     * 跳转至测试分页
+     */
+    public final static int INTENT03 = 10003;
+
+    /**
+     * 关闭整个应用
+     */
+    public static final String CLOSE_APP = "CLOSE_APP";
 }

@@ -9,6 +9,7 @@ import android.text.Spannable;
 import android.text.SpannableStringBuilder;
 import android.text.TextUtils;
 import android.text.style.ForegroundColorSpan;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ImageView;
@@ -18,8 +19,11 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
+
 import com.example.attendclassspad01.R;
 import com.example.attendclassspad01.Util.ConstantsForPreferencesUtils;
+import com.example.attendclassspad01.Util.ConstantsUtils;
 import com.example.attendclassspad01.Util.PreferencesUtils;
 import com.example.attendclassspad01.Util.ServerRequestUtils;
 import com.example.attendclassspad01.Util.ViewUtils;
@@ -46,7 +50,7 @@ public class ChooseModuleAty extends Activity {
     private LinearLayout rlWrapper01;//进入班级外框
     private RelativeLayout rlIntoClass;//进入班级
     private LinearLayout rlWrapper02;//进入错题本外框
-    private ImageView ivNoData;
+    private ImageView ivNoClassData;//没有班级数据
 
     private ListView lvClassList;//班级列表
 
@@ -89,9 +93,9 @@ public class ChooseModuleAty extends Activity {
         style1.setSpan(new ForegroundColorSpan(Color.parseColor("#FE710A")), 0, 4, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
         tvMsg06.setText(style1);
 
-        ivNoData = (ImageView) findViewById(R.id.iv_no_data_layout_aty_module);
-        ivNoData.setVisibility(View.GONE);
-        ivNoData.setOnClickListener(new Listeners());
+        ivNoClassData = (ImageView) findViewById(R.id.iv_no_data_layout_aty_module);
+        ivNoClassData.setVisibility(View.GONE);
+        ivNoClassData.setOnClickListener(new Listeners());
 
         //班级列表
         lvClassList = (ListView) findViewById(R.id.lv_class_list_layout_aty_choose_module);
@@ -128,7 +132,7 @@ public class ChooseModuleAty extends Activity {
                                     Toast.LENGTH_SHORT).show();
                         }
 
-                        ivNoData.setVisibility(View.VISIBLE);
+                        ivNoClassData.setVisibility(View.VISIBLE);
                         lvClassList.setVisibility(View.GONE);
 
                         vUtils.dismissDialog();
@@ -163,7 +167,7 @@ public class ChooseModuleAty extends Activity {
                             uiHandler.post(new Runnable() {
                                 @Override
                                 public void run() {
-                                    ivNoData.setVisibility(View.VISIBLE);
+                                    ivNoClassData.setVisibility(View.VISIBLE);
                                     lvClassList.setVisibility(View.GONE);
 
                                     Toast.makeText(ChooseModuleAty.this, "暂无可选择的班级，可返回切换账号试试", Toast.LENGTH_SHORT).show();
@@ -179,7 +183,7 @@ public class ChooseModuleAty extends Activity {
                         uiHandler.post(new Runnable() {
                             @Override
                             public void run() {
-                                ivNoData.setVisibility(View.GONE);
+                                ivNoClassData.setVisibility(View.GONE);
                                 lvClassList.setVisibility(View.VISIBLE);
 
                                 vUtils.dismissDialog();
@@ -196,7 +200,7 @@ public class ChooseModuleAty extends Activity {
                     uiHandler.post(new Runnable() {
                         @Override
                         public void run() {
-                            ivNoData.setVisibility(View.VISIBLE);
+                            ivNoClassData.setVisibility(View.VISIBLE);
                             lvClassList.setVisibility(View.GONE);
 
                             vUtils.dismissDialog();
@@ -232,21 +236,63 @@ public class ChooseModuleAty extends Activity {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Classes classes = classList.get(position);
                 if (classes != null) {
+                    classesIDCurr = classes.getID();
+                    cAdapter.setChoicedID(classesIDCurr);
                     classes.setHasChoiced(true);
+                    PreferencesUtils.saveInfoToPreferences(ChooseModuleAty.this, ConstantsForPreferencesUtils.CLASS_ID, classes.getID());
+                    cAdapter.notifyDataSetChanged();
                 }
-
-                cAdapter.notifyDataSetChanged();
 
                 rlIntoClass.performClick();
                 //不抢焦点
                 lvClassList.setSelected(false);
 
-                Intent intent = new Intent(ChooseModuleAty.this, MainActivity.class);
-                startActivity(intent);
+                PreferencesUtils.saveInfoToPreferences(ChooseModuleAty.this, ConstantsForPreferencesUtils.CLASS_ID_CHOICED, classList.get(position).getID());
+
+                Intent intentAction = new Intent();
+                intentAction.setAction(ConstantsUtils.REFRESH_USER_INFO);
+
+                if (classList.size() > 0 && classList.get(position) != null) {
+                    intentAction.putExtra(ConstantsUtils.CLASS_NAME, classList.get(position).getName());
+                    PreferencesUtils.saveInfoToPreferences(ChooseModuleAty.this, ConstantsForPreferencesUtils.CLASS_NAME, classList.get(position).getName());
+                }
+
+                if (classList.size() > 0 && classList.get(position) != null) {
+                    intentAction.putExtra(ConstantsUtils.CLASS_ID, classList.get(position).getID());
+                    PreferencesUtils.saveInfoToPreferences(ChooseModuleAty.this, ConstantsForPreferencesUtils.CLASS_ID, classList.get(position).getID());
+                }
+
+
+                intentAction.putExtra(ConstantsUtils.HAS_LOGINED, true);
+                //跳转至班级分页
+                intentAction.putExtra(ConstantsUtils.INTENT, ConstantsUtils.INTENT01);
+
+                // 发送广播
+                LocalBroadcastManager.getInstance(ChooseModuleAty.this)
+                        .sendBroadcast(intentAction);
 
                 finish();
             }
         });
+    }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK && event.getAction() == KeyEvent.ACTION_DOWN) {
+            Intent intentAction = new Intent();
+            intentAction.setAction(ConstantsUtils.REFRESH_USER_INFO);// 刷新用户信息
+            intentAction.putExtra(ConstantsUtils.HAS_LOGINED, false);
+            LocalBroadcastManager.getInstance(ChooseModuleAty.this).sendBroadcast(intentAction);
+
+
+            Intent intent = new Intent(ChooseModuleAty.this, LoginActivity.class);
+            startActivity(intent);
+
+            finish();
+
+            return true;
+        }
+        return super.onKeyDown(keyCode, event);
     }
 
 
@@ -277,7 +323,6 @@ public class ChooseModuleAty extends Activity {
                     }
 
                     vUtils.showLoadingDialog("");
-//                    showLoadingDialog("正在跳转");
                     requestClassFromServer();
 
                     break;

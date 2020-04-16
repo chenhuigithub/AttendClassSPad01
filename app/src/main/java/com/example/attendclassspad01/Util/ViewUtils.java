@@ -18,10 +18,24 @@ public class ViewUtils {
     private Context context;
     private Dialog dialog;
 
+    private boolean canShowDialog = true;//是否可以显示dialog(dialog依赖于Activity，在activity类中对此灵活控制)
+
     public ViewUtils(Context context) {
         this.context = context;
     }
 
+    public boolean isCanShowDialog() {
+        return canShowDialog;
+    }
+
+    /**
+     * 设置是否可以显示dialog的值(dialog依赖于Activity，在activity类中onPause等对此灵活控制)
+     *
+     * @param canShowDialog 是否可以显示dialog
+     */
+    public void setCanShowDialog(boolean canShowDialog) {
+        this.canShowDialog = canShowDialog;
+    }
 
     /**
      * 加载框
@@ -36,7 +50,9 @@ public class ViewUtils {
         }
         builder.setMessage(tip);
         dialog = builder.createForLoading();
-        dialog.show();
+        if (isCanShowDialog()) {
+            dialog.show();
+        }
     }
 
     public void dismissDialog() {

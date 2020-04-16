@@ -1,6 +1,7 @@
 package com.example.attendclassspad01.adapter;
 
 import android.content.Context;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,13 +19,25 @@ import java.util.List;
 public abstract class BaseListAdapter<T> extends BaseAdapter {
     protected Context context;
     private List<T> dataList;
+    private String IDChoiced;//选中的ID
 
     private HashMap lmap = new HashMap();
 
-    public BaseListAdapter(Context context, List<T> dataList) {
+    protected BaseListAdapter(Context context, List<T> dataList) {
         this.context = context;
         this.dataList = dataList;
     }
+
+    public void setChoicedID(String id) {
+        if (!TextUtils.isEmpty(id)) {
+            IDChoiced = id;
+        }
+    }
+
+    public String getChoicedID() {
+        return IDChoiced;
+    }
+
 
     @Override
     public int getCount() {
@@ -52,7 +65,7 @@ public abstract class BaseListAdapter<T> extends BaseAdapter {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         View resultView = convertView;
-        if (resultView == null ) {
+        if (resultView == null) {
             resultView = LayoutInflater.from(this.context).inflate(this.getLayoutResID(), null);
 //            lmap.put(position, resultView);
         }

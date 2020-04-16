@@ -12,6 +12,7 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -20,6 +21,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
+import com.bumptech.glide.Glide;
 import com.example.attendclassspad01.R;
 import com.example.attendclassspad01.Util.APKVersionCodeUtils;
 import com.example.attendclassspad01.Util.ConstantsForPreferencesUtils;
@@ -77,6 +79,7 @@ public class LoginActivity extends Activity {
     private EditText edtName;// 登录名
     private EditText edtPassword;// 登录密码
     private TextView tvLogin;// 登录
+    private ImageView ivUserLogo;// 用户头像
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -97,6 +100,10 @@ public class LoginActivity extends Activity {
 
         dealWithExtras();
         initHandler();
+
+        ivUserLogo = (ImageView) findViewById(R.id.iv_user_logo_layout_aty_login);
+        String picUrl = PreferencesUtils.acquireInfoFromPreferences(this, ConstantsForPreferencesUtils.USER_HEAD_PIC_URL);
+        Glide.with(this).load(picUrl).error(R.drawable.student_logo).into(ivUserLogo);
 
         tvLogin = (TextView) findViewById(R.id.tv_login_layout_aty_login);
         tvLogin.setFocusable(true);
@@ -482,14 +489,31 @@ public class LoginActivity extends Activity {
     }
 
     @Override
+    protected void onPause() {
+        super.onPause();
+
+        if (vUtils != null) {
+            vUtils.setCanShowDialog(false);
+        }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        if (vUtils != null) {
+            vUtils.setCanShowDialog(true);
+        }
+    }
+
+    @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_BACK && event.getAction() == KeyEvent.ACTION_DOWN) {
-            Intent intent = new Intent();
-            intent.setAction(ConstantsUtils.REFRESH_USER_INFO);// 刷新用户信息
-            intent.putExtra(ConstantsUtils.HAS_LOGINED, false);
-            LocalBroadcastManager.getInstance(LoginActivity.this).sendBroadcast(intent);
+            Intent intentAction = new Intent();
+            intentAction.setAction(ConstantsUtils.CLOSE_APP);// 关闭应用
+            intentAction.putExtra(ConstantsUtils.HAS_LOGINED, false);
+            LocalBroadcastManager.getInstance(LoginActivity.this).sendBroadcast(intentAction);
 
-//            setResult(RESULT_OK);
             finish();
 
             return true;
