@@ -65,7 +65,7 @@ public class TestQuestionAdapter01 extends BaseAdapter {
     protected void doAssignValueForView(int position, View resultView, final Test dataObj) {
         //题目
         TextView tvQuestion = (TextView) resultView.findViewById(R.id.tv_content_layout_fg_test);
-        tvQuestion.setText(dataObj.getContent());
+        tvQuestion.setText(dataObj.getQuestionHtml());
 
         final LinearLayout llOptions = resultView.findViewById(R.id.ll_options_layout_fg_test01);
 //        final LinearLayout llOptionA = resultView.findViewById(R.id.ll_option_a_layout_fg_test01);
@@ -232,7 +232,7 @@ public class TestQuestionAdapter01 extends BaseAdapter {
         if (test != null) {
             //题目
             TextView tvQuestion = (TextView) resultView.findViewById(R.id.tv_content_layout_fg_test);
-            tvQuestion.setText(test.getContent());
+            tvQuestion.setText(test.getQuestionHtml());
 
             final LinearLayout llOptions = resultView.findViewById(R.id.ll_options_layout_fg_test01);
 
@@ -241,7 +241,7 @@ public class TestQuestionAdapter01 extends BaseAdapter {
                 if (vChild instanceof LinearLayout) {
                     LinearLayout llChild = (LinearLayout) vChild;
                     final CheckBox cbox = llChild.findViewWithTag("cbox");
-                    cbox.setTag(R.id.tag01,String.valueOf(j));
+                    cbox.setTag(R.id.tag01, String.valueOf(j));
                     if (test.getUserAnswer().equals(String.valueOf(j))) {
                         cbox.setChecked(true);
                     } else {

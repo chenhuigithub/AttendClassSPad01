@@ -10,7 +10,11 @@
         <option name="modules">
           <set>
             <option value="$PROJECT_DIR$" />
+            <option value="$PROJECT_DIR$/PullRefreshListView" />
+            <option value="$PROJECT_DIR$/PullRefreshListViewNew" />
             <option value="$PROJECT_DIR$/app" />
+            <option value="$PROJECT_DIR$/mylibrary" />
+            <option value="$PROJECT_DIR$/pullrefreshlistviewlibrary" />
           </set>
         </option>
         <option name="resolveModulePerSourceSet" value="false" />

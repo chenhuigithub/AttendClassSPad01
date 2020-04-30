@@ -263,6 +263,8 @@ public class LoginActivity extends Activity {
         user.setLoginName(loginName);
         // 登录密码
         user.setLoginPassword(password);
+        //用户登录类型(授课老师登录)
+        user.setType(ConstantsForServerUtils.ATTEND_CLASS_S_USER_LOGIN);
 
         // 附加信息
         AdditionalInfo aInfo = new AdditionalInfo();

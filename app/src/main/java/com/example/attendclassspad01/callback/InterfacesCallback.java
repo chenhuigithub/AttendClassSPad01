@@ -1,12 +1,12 @@
 package com.example.attendclassspad01.callback;
 
 import android.content.Intent;
-import android.graphics.Picture;
 import android.view.View;
 import android.widget.AdapterView;
 
 import com.example.attendclassspad01.model.Classes;
 import com.example.attendclassspad01.model.KeyValue;
+import com.example.attendclassspad01.model.Picture;
 import com.example.attendclassspad01.model.TestData;
 import com.example.attendclassspad01.model.TestPaper;
 
@@ -243,5 +243,19 @@ public class InterfacesCallback {
          */
         public void doAfterKonwShowType(boolean isExercise);
 
+    }
+
+    /**
+     * Adapter与Activity交互的接口：传递做什么事情等信息
+     */
+    public interface ICanDoSth {
+        /**
+         * 传递应该做什么事情
+         *
+         * @param i   事情类型
+         * @param pos 数据位置
+         * @param id  数据ID
+         */
+        public void doSth(int i, int pos, String id);
     }
 }

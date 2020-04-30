@@ -99,9 +99,28 @@ public class ConstantsUtils {
     public static final String TYPE = "type";
 
     /**
+     * 刷新显示信息
+     */
+    public static final String REFRESH_INFO = "REFRESH_INFO";
+    /**
      * 刷新显示用户信息
      */
     public static final String REFRESH_USER_INFO = "REFRESH_USER_INFO";
+
+    /**
+     * 刷新显示班级信息
+     */
+    public static final String REFRESH_CLASS_INFO = "REFRESH_CLASS_INFO";
+
+    /**
+     * 刷新显示目录信息
+     */
+    public static final String REFRESH_CATALOG_INFO = "REFRESH_CATALOG_INFO";
+
+    /**
+     * 是否需要刷新目录
+     */
+    public static final String NEED_REFRESH_CATALOG = "NEED_REFRESH_CATALOG";
 
     /**
      * INTENT_01
@@ -179,4 +198,76 @@ public class ConstantsUtils {
      * 关闭整个应用
      */
     public static final String CLOSE_APP = "CLOSE_APP";
+
+    /**
+     * 配套资源
+     */
+    public static final String MR = "MR";
+
+    /**
+     * 扩展资源
+     */
+    public static final String ER = "ER";
+
+    /**
+     * 预览试题
+     */
+    public static final String PT = "PT";
+
+    /**
+     * 组试题
+     */
+    public static final String T = "T";
+
+    /**
+     * 组学案
+     */
+    public static final String O = "O";
+
+    /**
+     * 组课件
+     */
+    public static final String C = "C";
+
+    /**
+     * 点击单项内容后
+     */
+    public final static int AFTER_CLICK_ALL = 1001;
+
+    /**
+     * 删除
+     */
+    public static final String DELETE = "DELETE";
+    /**
+     * 删除学案预览
+     */
+    public static final String DELETE_OMICS_PREVIEW = "DELETE_OMICS_PREVIEW";
+    /**
+     * 删除试题预览
+     */
+    public static final String DELETE_TEST_PREVIEW = "DELETE_TEST_PREVIEW";
+
+    /**
+     * ID
+     */
+    public static final String ID = "ID";
+
+    /**
+     * 上移
+     */
+    public static final String MOVE_UP = "MOVE_UP";
+    /**
+     * 下移
+     */
+    public static final String MOVE_DOWN = "MOVE_DOWN";
+
+    /**
+     * 查看解析
+     */
+    public static final String SEE_ANALYSIS = "SEE_ANALYSIS";
+
+    /**
+     * 路径
+     */
+    public static final String PATH = "PATH";
 }

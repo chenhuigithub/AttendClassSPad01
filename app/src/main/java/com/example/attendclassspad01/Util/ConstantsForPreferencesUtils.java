@@ -133,6 +133,11 @@ public class ConstantsForPreferencesUtils {
     public static final String CLASS_ID_CHOICED = "CLASS_ID_CHOICED";
 
     /**
+     * 所选班级名称
+     */
+    public static final String CLASS_NAME_CHOICED = "CLASS_NAME_CHOICED";
+
+    /**
      * 是否已登录
      */
     public static final String HAS_LOGINED = "HAS_LOGINED";
@@ -146,5 +151,15 @@ public class ConstantsForPreferencesUtils {
      * 班级ID
      */
     public final static String CLASS_ID = "CLASS_ID";
+
+    /**
+     * 所选目录ID
+     */
+    public static final String CATALOG_ID_CHOICED = "CATALOG_ID_CHOICED";
+
+    /**
+     * 所选目录名称
+     */
+    public static final String CATALOG_NAME_CHOICED = "CATALOG_NAME_CHOICED";
 
 }

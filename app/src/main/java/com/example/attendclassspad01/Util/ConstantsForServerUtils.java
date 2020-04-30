@@ -118,6 +118,12 @@ public class ConstantsForServerUtils {
     public static final String DATAPID = "DataPID";
 
     /**
+     * html格式
+     */
+    public static final String HTML = "html";
+
+
+    /**
      * 文档
      */
     public static final String WORD = "word";
@@ -161,5 +167,16 @@ public class ConstantsForServerUtils {
      * 设备类型：1:Android手机，2:Android平板，3:IOS手机，4:IOS平板
      */
     public static final String DEVICE_TYPE_VALUE = "2";
+
+
+    /**
+     * DataInfo
+     */
+    public static final String DATAINFO = "DataInfo";
+
+    /**
+     * 用户登录类型（APP类型，授课学生端:3）
+     */
+    public static final String ATTEND_CLASS_S_USER_LOGIN = "3";
 
 }

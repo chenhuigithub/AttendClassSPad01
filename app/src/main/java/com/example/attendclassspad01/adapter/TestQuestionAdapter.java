@@ -69,7 +69,7 @@ public class TestQuestionAdapter extends BaseListAdapter<Test> {
         }
 
         TextView tvQuestion = (TextView) resultView.findViewById(R.id.tv_content_layout_fg_test);
-        tvQuestion.setText(dataObj.getContent());
+        tvQuestion.setText(dataObj.getQuestionHtml());
 
         //柱状图
 //        HistogramView vGram = (HistogramView) resultView.findViewById(R.id.gramv_layout_fg_test_choice);
@@ -119,7 +119,7 @@ public class TestQuestionAdapter extends BaseListAdapter<Test> {
 
         //答案解析
         final TextView tvAnalysis = (TextView) resultView.findViewById(R.id.tv_analysis_layout_fg_test);
-        tvAnalysis.setText(dataObj.getAnalysis());
+        tvAnalysis.setText(dataObj.getAnswerAnalysisHtml());
 
         if (type == 0) {//答题状态
             llSeeAnswerAnalysis.setVisibility(View.GONE);

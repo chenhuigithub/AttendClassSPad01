@@ -34,20 +34,27 @@ import com.example.attendclassspad01.Util.ConstantsUtils;
 import com.example.attendclassspad01.Util.PicFormatUtils;
 import com.example.attendclassspad01.Util.PreferencesUtils;
 import com.example.attendclassspad01.Util.ViewUtils;
+import com.example.attendclassspad01.callback.InterfacesCallback;
+import com.example.attendclassspad01.callback.OnListenerForPlayVideoSendOutInfo;
 import com.example.attendclassspad01.fg.ClassesFg;
 import com.example.attendclassspad01.fg.ClassroomTestFg;
 import com.example.attendclassspad01.fg.ErrorBookFg;
 import com.example.attendclassspad01.model.Classes;
+import com.example.attendclassspad01.model.VideoAndAudioInfoModel;
+import com.example.attendclassspad01.model.VideoAudio;
+
+import java.util.List;
 
 /**
  * 主界面
  *
  * @author chenhui_2020.02.25
  */
-public class MainActivity extends FragmentActivity {
+public class MainActivity extends FragmentActivity implements InterfacesCallback.ICanKnowSth2, OnListenerForPlayVideoSendOutInfo {
     private long exitTime = 0;
     private boolean hasLogined = false;//是否已登录，默认为未登录
 
+    private Boolean needRefreshCatalog = false;//是否需要更新目录
 
     private Classes classes;//班级
 
@@ -116,6 +123,8 @@ public class MainActivity extends FragmentActivity {
         ctFg = new ClassroomTestFg();
         eFg = new ErrorBookFg();
 
+//        dealWithExtras();
+
         initHandler();
 
         initView();
@@ -123,10 +132,29 @@ public class MainActivity extends FragmentActivity {
 
         initBroadcastReceiver();
 
-        checkIfHasLogined();
+        hasLogined = PreferencesUtils.acquireBooleanInfoFromPreferences(this, ConstantsForPreferencesUtils.HAS_LOGINED);
+        if (!hasLogined) {//若未登录先去登录
+            toLoginPage();
+
+        } else {
+            //若已登录展示信息
+            setLogined();
+
+//            rlClasses.performClick();
+        }
 
         rlClasses.performClick();
+
     }
+
+//    private void dealWithExtras() {
+//        Bundle bundle = getIntent().getExtras();
+//        if (bundle == null) {
+//            return;
+//        }
+//
+//        needRefreshCatalog =bundle.getBoolean(ConstantsUtils.NEED_REFRESH_CATALOG, false);
+//    }
 
     private void initView() {
         ivUserLogo = (ImageView) findViewById(R.id.iv_user_logo_layout_aty_main);
@@ -298,17 +326,6 @@ public class MainActivity extends FragmentActivity {
         classes.setName("");
     }
 
-    /**
-     * 检查用户是否登录
-     */
-    private void checkIfHasLogined() {
-        hasLogined = PreferencesUtils.acquireBooleanInfoFromPreferences(this, ConstantsForPreferencesUtils.HAS_LOGINED);
-        if (!hasLogined) {//若未登录先去登录
-            toLoginPage();
-        } else {
-            setLogined();
-        }
-    }
 
     /**
      * 跳转至登录界面
@@ -339,6 +356,7 @@ public class MainActivity extends FragmentActivity {
         String cName = PreferencesUtils.acquireInfoFromPreferences(MainActivity.this, ConstantsForPreferencesUtils.CLASS_NAME);
         if (!TextUtils.isEmpty(cName)) {
             classes.setName(cName);
+            tvClassName.setText(cName);
         }
 
         //班级ID
@@ -395,6 +413,13 @@ public class MainActivity extends FragmentActivity {
         if (vUtils != null) {
             vUtils.setCanShowDialog(true);
         }
+
+        if (hasLogined) {
+//            //刷新课堂界面展示信息
+//            Intent intentAction = new Intent();
+//            intentAction.setAction(ConstantsUtils.REFRESH_INFO);
+//            LocalBroadcastManager.getInstance(MainActivity.this).sendBroadcast(intentAction);
+        }
     }
 
     @Override
@@ -412,6 +437,31 @@ public class MainActivity extends FragmentActivity {
         return super.onKeyDown(keyCode, event);
     }
 
+    @Override
+    public void ICanGetVideoInfoCurrentPlay(VideoAndAudioInfoModel info) {
+
+    }
+
+    @Override
+    public void doAfterClickBack() {
+
+    }
+
+    @Override
+    public void doSwitchFullScreen(List<VideoAudio> list, VideoAudio info) {
+
+    }
+
+    @Override
+    public void doSwitchHalfScreen() {
+
+    }
+
+    @Override
+    public void getInfo(String str) {
+
+    }
+
     private class Listeners implements View.OnClickListener {
         @Override
         public void onClick(View v) {
@@ -420,6 +470,11 @@ public class MainActivity extends FragmentActivity {
             switch (id) {
                 case R.id.rl_wrapper_classes_layout_aty_main://我的课堂
                     showFragment(cFg);
+
+                    //刷新课堂界面展示信息
+                    Intent intentAction = new Intent();
+                    intentAction.setAction(ConstantsUtils.REFRESH_INFO);
+                    LocalBroadcastManager.getInstance(MainActivity.this).sendBroadcast(intentAction);
 
 //                    ivClasses.setSelected(true);
 //                    tvClasses.setTextColor(res.getColor(R.color.blue3));

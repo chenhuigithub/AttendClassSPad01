@@ -5,7 +5,7 @@ android {
     buildToolsVersion "29.0.3"
     defaultConfig {
         applicationId "com.example.attendclassspad01"
-        minSdkVersion 15
+        minSdkVersion 16
         targetSdkVersion 29
         versionCode 1
         versionName "1.0"
@@ -32,4 +32,6 @@ dependencies {
     implementation files('libs/fastjson-1.1.31.jar')
     implementation files('libs/glide-3.7.0.jar')
     implementation files('libs/gson-2.2.4.jar')
+    implementation project(path: ':pullrefreshlistviewlibrary')
+    implementation 'androidx.localbroadcastmanager:localbroadcastmanager:1.0.0'
 }

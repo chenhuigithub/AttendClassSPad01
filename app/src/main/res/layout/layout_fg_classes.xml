@@ -30,7 +30,8 @@
                 android:id="@+id/tv_class_name_layout_fg_classes"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="九年级（1）班"
+                android:clickable="false"
+                android:text="xx班级"
                 android:textColor="@color/white"
                 android:textSize="@dimen/dimen_text_009"></TextView>
 
@@ -40,17 +41,55 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/dimen_padding_004"
                 android:layout_toRightOf="@id/tv_class_name_layout_fg_classes"
+                android:clickable="false"
                 android:text="切换"
                 android:textColor="@color/red02"
                 android:textSize="@dimen/dimen_text_006"></TextView>
         </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/rl_wrapper_switch_catalog_layout_fg_classes"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="top"
+            android:layout_marginLeft="@dimen/dimen_padding_006"
+            android:clickable="true"
+            android:gravity="top|center_vertical"
+            android:orientation="horizontal"
+            android:paddingLeft="@dimen/dimen_padding_008"
+            android:paddingTop="@dimen/dimen_padding_006"
+            android:paddingRight="@dimen/dimen_padding_008"
+            android:paddingBottom="@dimen/dimen_padding_006">
+
+            <TextView
+                android:id="@+id/tv_catalog_name_layout_fg_classes"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:clickable="false"
+                android:text="xx目录"
+                android:textColor="@color/white"
+                android:textSize="@dimen/dimen_text_009"></TextView>
+
+            <TextView
+                android:id="@+id/tv_switch_catalog_layout_fg_classes"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/dimen_padding_004"
+                android:layout_toRightOf="@id/tv_catalog_name_layout_fg_classes"
+                android:clickable="false"
+                android:text="切换"
+                android:textColor="@color/red02"
+                android:textSize="@dimen/dimen_text_006"></TextView>
+        </RelativeLayout>
+
 
         <ImageView
             android:layout_width="@dimen/dimen_height_006"
             android:layout_height="@dimen/dimen_height_006"
             android:layout_marginLeft="@dimen/dimen_padding_008"
             android:background="@drawable/teacher_logo"
-            android:scaleType="fitXY" />
+            android:scaleType="fitXY"
+            android:visibility="gone" />
 
         <TextView
             android:id="@+id/tv_msg01_layout_fg_classes"
@@ -59,14 +98,16 @@
             android:layout_marginLeft="@dimen/dimen_padding_004"
             android:text="王老师(英语) 正在讲课"
             android:textColor="@color/white"
-            android:textSize="@dimen/dimen_text_006"></TextView>
+            android:textSize="@dimen/dimen_text_006"
+            android:visibility="gone"></TextView>
 
         <ImageView
             android:layout_width="@dimen/dimen_height_005"
             android:layout_height="@dimen/dimen_height_005"
             android:layout_marginLeft="@dimen/dimen_padding_003"
             android:background="@drawable/playing_sign"
-            android:scaleType="fitXY" />
+            android:scaleType="fitXY"
+            android:visibility="gone" />
 
         <TextView
             android:id="@+id/tv_msg02_layout_fg_classes"
@@ -77,34 +118,263 @@
             android:gravity="right"
             android:text="教师屏幕共享中 ... ..."
             android:textColor="@color/white"
-            android:textSize="@dimen/dimen_text_006"></TextView>
+            android:textSize="@dimen/dimen_text_006"
+            android:visibility="gone"></TextView>
     </LinearLayout>
 
     <LinearLayout
-        android:id="@+id/rl_content_layout_fg_classes"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:clickable="false"
-        android:background="@color/light_grey15"
-        android:orientation="vertical">
+        android:layout_height="0px"
+        android:layout_weight="0.85"
+        android:background="#EEF2F5"
+        android:gravity="top">
 
-        <ImageView
-            android:id="@+id/iv_layout_fg_classes"
-            android:layout_width="match_parent"
+        <LinearLayout
+            android:id="@+id/ll_wrapper02_layout_fg_attend_class_detail"
+            android:layout_width="0px"
             android:layout_height="match_parent"
-            android:clickable="true"
-            android:background="@drawable/ppt01"
-            android:scaleType="fitXY" />
+            android:layout_marginLeft="@dimen/dimen_padding_007"
+            android:layout_marginTop="@dimen/dimen_padding_006"
+            android:layout_weight="0.72"
+            android:background="@color/white"
+            android:gravity="top"
+            android:orientation="vertical"
+            android:padding="@dimen/dimen_padding_005">
 
-<!--        <RelativeLayout-->
-<!--            android:id="@+id/rl_answer_question_layout_fg_classes"-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:visibility="gone"-->
-<!--            android:layout_height="match_parent"-->
-<!--            android:padding="@dimen/dimen_padding_008"></RelativeLayout>-->
+            <LinearLayout
+                android:id="@+id/ll_wrapper01_layout_fg_attend_class_detail"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/white"
+                android:orientation="vertical"
+                android:padding="@dimen/dimen_padding_005"
+                android:visibility="visible">
 
 
+                <LinearLayout
+                    android:id="@+id/ll_wrapper_share_area_layout_activity_share_full_screen"
+                    android:layout_width="match_parent"
+                    android:layout_height="0px"
+                    android:layout_weight="0.62"
+                    android:background="@color/light_grey06"
+                    android:gravity="top"
+                    android:orientation="vertical"
+                    android:visibility="visible">
+
+                    <FrameLayout
+                        android:id="@+id/fl_wrapper_content_layout_activity_share_full_screen"
+                        android:layout_width="fill_parent"
+                        android:layout_height="0px"
+                        android:layout_weight="0.8"
+                        android:background="@color/white"
+                        android:focusable="false"
+                        android:visibility="visible">
+
+                        <!-- 教案内容，滑动布局 -->
+
+                        <androidx.viewpager.widget.ViewPager
+                            android:id="@+id/vpager_content_layout_fg_classes"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_gravity="center"
+                            android:layout_weight="0.8"
+                            android:background="@color/grey"
+                            android:flipInterval="30"
+                            android:persistentDrawingCache="animation"
+                            android:visibility="visible" />
+
+                    </FrameLayout>
+                </LinearLayout>
+
+                <!-- 画廊：展示文件缩略图 -->
+
+                <RelativeLayout
+                    android:id="@+id/rl_wrapper01_layout_fg_attend_class_detail"
+                    android:layout_width="match_parent"
+                    android:layout_height="0px"
+                    android:layout_marginLeft="2dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginRight="2dp"
+                    android:layout_weight="0.13"
+                    android:background="@color/light_grey06"
+                    android:gravity="top"
+                    android:orientation="vertical"
+                    android:paddingTop="5dp"
+                    android:paddingBottom="5dp">
+
+                    <TextView
+                        android:id="@+id/ll_previous_layout_fg_attend_class_detail"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_alignParentLeft="true"
+                        android:layout_margin="5dp"
+                        android:background="@drawable/selector_for_gray_stroke_white_solid_rectangle"
+                        android:clickable="true"
+                        android:gravity="center"
+                        android:padding="5dp"
+                        android:text=" &lt; "
+                        android:visibility="gone" />
+
+                    <TextView
+                        android:id="@+id/ll_next_layout_fg_attend_class_detail"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_alignParentRight="true"
+                        android:layout_margin="5dp"
+                        android:background="@drawable/selector_for_gray_stroke_white_solid_rectangle"
+                        android:clickable="true"
+                        android:gravity="center"
+                        android:padding="5dp"
+                        android:text=" > "
+                        android:visibility="gone" />
+
+                    <Gallery
+                        android:id="@+id/gl_file_layout_fg_attend_class_detail"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_toLeftOf="@id/ll_next_layout_fg_attend_class_detail"
+                        android:layout_toRightOf="@id/ll_previous_layout_fg_attend_class_detail"
+                        android:fadingEdge="none"
+                        android:fadingEdgeLength="0dp"
+                        android:focusable="false"
+                        android:spacing="10dp" />
+                </RelativeLayout>
+            </LinearLayout>
+
+            <!--Html文档类文件(组试题、组学案)预览-->
+
+            <LinearLayout
+                android:id="@+id/ll_preview_content_layout_fg_attend_class_detail"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/white"
+                android:orientation="vertical"
+                android:padding="@dimen/dimen_padding_005"
+                android:visibility="gone"></LinearLayout>
+
+            <!--音视频-->
+            <RelativeLayout
+                android:id="@+id/rl_video_content_layout_fg_classes"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:background="@android:color/white"
+                android:flipInterval="30"
+                android:persistentDrawingCache="animation"
+                android:visibility="gone" />
+
+            <ImageView
+                android:id="@+id/iv_no_preview_content_layout_fg_attend_class_detail"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/no_data"
+                android:scaleType="fitXY"
+                android:visibility="visible" />
+        </LinearLayout>
+
+        <View
+            android:layout_width="@dimen/dimen_padding_006"
+            android:layout_height="match_parent" />
+
+        <LinearLayout
+            android:layout_width="0px"
+            android:layout_height="match_parent"
+            android:layout_marginTop="@dimen/dimen_padding_006"
+            android:layout_marginRight="@dimen/dimen_padding_006"
+            android:layout_marginBottom="@dimen/dimen_padding_006"
+            android:layout_weight="0.28"
+            android:background="@color/white"
+            android:gravity="top"
+            android:orientation="vertical">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/white"
+                android:gravity="top"
+                android:orientation="vertical"
+                android:padding="@dimen/dimen_padding_005">
+
+                <ImageView
+                    android:id="@+id/iv_arrow_up_layout_fg_attend_class_detail"
+                    android:layout_width="12dp"
+                    android:layout_height="12dp"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:background="@drawable/arrow_up"
+                    android:contentDescription="@string/app_name"
+                    android:scaleType="fitXY" />
+
+                <TextView
+                    android:id="@+id/tv_retract_layout_fg_attend_class_detail"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/dimen_padding_005"
+                    android:layout_marginRight="@dimen/dimen_padding_003"
+                    android:layout_toLeftOf="@id/iv_arrow_up_layout_fg_attend_class_detail"
+                    android:background="@color/white"
+                    android:text="收起"
+                    android:textColor="@color/color_text_additional"
+                    android:textSize="@dimen/dimen_text_006"
+                    android:visibility="gone" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_toLeftOf="@id/tv_retract_layout_fg_attend_class_detail"
+                    android:background="@color/white"
+                    android:text="授课列表"
+                    android:textColor="@color/color_text_title01"
+                    android:textSize="@dimen/dimen_text_007" />
+            </RelativeLayout>
+
+            <!-- （授课列表）文件目录 -->
+            <com.example.pullrefreshlistviewlibrary.util.PullDownView
+                android:id="@+id/v_files_catalog_layout_fg_attend_class_detail"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="@dimen/dimen_padding_006"
+                android:layout_marginTop="@dimen/dimen_padding_006"
+                android:background="@android:color/white"
+                android:cacheColorHint="#00000000"
+                android:divider="@color/white"
+                android:dividerHeight="1dp"
+                android:focusable="false"
+                android:scrollbars="vertical"
+                android:visibility="visible" />
+
+
+            <LinearLayout
+                android:id="@+id/ll_no_file_layout_fg_attend_class_detail"
+                android:layout_width="match_parent"
+                android:layout_height="300dp"
+                android:layout_marginLeft="@dimen/dimen_padding_006"
+                android:layout_marginTop="@dimen/dimen_padding_006"
+                android:gravity="center"
+                android:visibility="visible">
+
+                <ImageView
+                    android:id="@+id/iv_no_file_layout_fg_attend_class_detail"
+                    android:layout_width="200dp"
+                    android:layout_height="200dp"
+                    android:background="@drawable/no_data" />
+            </LinearLayout>
+
+
+            <TextView
+                android:id="@+id/tv_file_upload_layout_fg_attend_class_detail"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="15dp"
+                android:background="@drawable/selector_for_blue_rectangle"
+                android:gravity="center"
+                android:padding="10dp"
+                android:text="+  本地上传"
+                android:textColor="@color/color_text_content"
+                android:textSize="@dimen/dimen_text_005" />
+        </LinearLayout>
     </LinearLayout>
-
 
 </LinearLayout>

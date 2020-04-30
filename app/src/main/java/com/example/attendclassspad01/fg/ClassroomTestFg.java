@@ -140,10 +140,10 @@ public class ClassroomTestFg extends BaseNotPreLoadFg {
         for (int j = 0; j < 10; j++) {
             Test q = new Test();
             q.setId("qid" + j);
-            q.setContent(String.valueOf(j + 1) + ".以下历史事件中，与关羽无关的是（）：");
+            q.setQuestionHtml(String.valueOf(j + 1) + ".以下历史事件中，与关羽无关的是（）：");
             q.setUserAnswer("D");
             q.setRightAnswer("D");
-            q.setAnalysis("七擒七纵，七擒孟获，又称南中平定战，是建兴三年蜀汉丞相诸葛亮对南中发动平定南中的战争。当时朱褒、雍闿、高定等人叛变，南中豪强孟获亦有参与，最后诸葛亮亲率大军南下，平定南中。");
+            q.setAnswerAnalysisHtml("七擒七纵，七擒孟获，又称南中平定战，是建兴三年蜀汉丞相诸葛亮对南中发动平定南中的战争。当时朱褒、雍闿、高定等人叛变，南中豪强孟获亦有参与，最后诸葛亮亲率大军南下，平定南中。");
             if (paper != null) {
                 q.setTitle("错题本:" + paper.getName());
             }

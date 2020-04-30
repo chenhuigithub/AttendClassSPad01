@@ -247,25 +247,24 @@ public class ChooseModuleAty extends Activity {
                 //不抢焦点
                 lvClassList.setSelected(false);
 
-                PreferencesUtils.saveInfoToPreferences(ChooseModuleAty.this, ConstantsForPreferencesUtils.CLASS_ID_CHOICED, classList.get(position).getID());
-
                 Intent intentAction = new Intent();
-                intentAction.setAction(ConstantsUtils.REFRESH_USER_INFO);
+//                intentAction.setAction(ConstantsUtils.REFRESH_INFO);
+                intentAction.setAction(ConstantsUtils.REFRESH_CLASS_INFO);
+
 
                 if (classList.size() > 0 && classList.get(position) != null) {
                     intentAction.putExtra(ConstantsUtils.CLASS_NAME, classList.get(position).getName());
-                    PreferencesUtils.saveInfoToPreferences(ChooseModuleAty.this, ConstantsForPreferencesUtils.CLASS_NAME, classList.get(position).getName());
+                    PreferencesUtils.saveInfoToPreferences(ChooseModuleAty.this, ConstantsForPreferencesUtils.CLASS_NAME_CHOICED, classList.get(position).getName());
                 }
 
                 if (classList.size() > 0 && classList.get(position) != null) {
                     intentAction.putExtra(ConstantsUtils.CLASS_ID, classList.get(position).getID());
-                    PreferencesUtils.saveInfoToPreferences(ChooseModuleAty.this, ConstantsForPreferencesUtils.CLASS_ID, classList.get(position).getID());
+                    PreferencesUtils.saveInfoToPreferences(ChooseModuleAty.this, ConstantsForPreferencesUtils.CLASS_ID_CHOICED, classList.get(position).getID());
                 }
 
 
                 intentAction.putExtra(ConstantsUtils.HAS_LOGINED, true);
-                //跳转至班级分页
-                intentAction.putExtra(ConstantsUtils.INTENT, ConstantsUtils.INTENT01);
+//                intentAction.putExtra(ConstantsUtils.INTENT, ConstantsUtils.INTENT01);
 
                 // 发送广播
                 LocalBroadcastManager.getInstance(ChooseModuleAty.this)
@@ -311,6 +310,7 @@ public class ChooseModuleAty extends Activity {
                     rlWrapper01.setSelected(false);
 
                     Intent intent = new Intent(ChooseModuleAty.this, MainActivity.class);
+                    intent.putExtra(ConstantsUtils.NEED_REFRESH_CATALOG, true);
                     startActivity(intent);
 
                     finish();
