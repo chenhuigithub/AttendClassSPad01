@@ -150,46 +150,24 @@
                 android:padding="@dimen/dimen_padding_005"
                 android:visibility="visible">
 
+                <!-- 教案内容，滑动布局 -->
 
-                <LinearLayout
-                    android:id="@+id/ll_wrapper_share_area_layout_activity_share_full_screen"
+                <androidx.viewpager.widget.ViewPager
+                    android:id="@+id/vpager_content_layout_fg_classes"
                     android:layout_width="match_parent"
-                    android:layout_height="0px"
-                    android:layout_weight="0.62"
-                    android:background="@color/light_grey06"
-                    android:gravity="top"
-                    android:orientation="vertical"
-                    android:visibility="visible">
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    android:layout_weight="0.8"
+                    android:background="@color/grey"
+                    android:flipInterval="30"
+                    android:persistentDrawingCache="animation"
+                    android:visibility="visible" />
 
-                    <FrameLayout
-                        android:id="@+id/fl_wrapper_content_layout_activity_share_full_screen"
-                        android:layout_width="fill_parent"
-                        android:layout_height="0px"
-                        android:layout_weight="0.8"
-                        android:background="@color/white"
-                        android:focusable="false"
-                        android:visibility="visible">
 
-                        <!-- 教案内容，滑动布局 -->
-
-                        <androidx.viewpager.widget.ViewPager
-                            android:id="@+id/vpager_content_layout_fg_classes"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:layout_gravity="center"
-                            android:layout_weight="0.8"
-                            android:background="@color/grey"
-                            android:flipInterval="30"
-                            android:persistentDrawingCache="animation"
-                            android:visibility="visible" />
-
-                    </FrameLayout>
-                </LinearLayout>
-
-                <!-- 画廊：展示文件缩略图 -->
+                <!-- 画廊：展示ppt文件缩略图 -->
 
                 <RelativeLayout
-                    android:id="@+id/rl_wrapper01_layout_fg_attend_class_detail"
+                    android:id="@+id/rl_ppt_gallery_layout_fg_classes"
                     android:layout_width="match_parent"
                     android:layout_height="0px"
                     android:layout_marginLeft="2dp"
@@ -200,10 +178,11 @@
                     android:gravity="top"
                     android:orientation="vertical"
                     android:paddingTop="5dp"
-                    android:paddingBottom="5dp">
+                    android:paddingBottom="5dp"
+                    android:visibility="gone">
 
                     <TextView
-                        android:id="@+id/ll_previous_layout_fg_attend_class_detail"
+                        android:id="@+id/ll_previous_layout_fg_classes"
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
                         android:layout_alignParentLeft="true"
@@ -216,7 +195,7 @@
                         android:visibility="gone" />
 
                     <TextView
-                        android:id="@+id/ll_next_layout_fg_attend_class_detail"
+                        android:id="@+id/ll_next_layout_fg_classes"
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
                         android:layout_alignParentRight="true"
@@ -229,40 +208,44 @@
                         android:visibility="gone" />
 
                     <Gallery
-                        android:id="@+id/gl_file_layout_fg_attend_class_detail"
+                        android:id="@+id/gl_ppt_layout_fg_classes"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_gravity="center_horizontal"
-                        android:layout_toLeftOf="@id/ll_next_layout_fg_attend_class_detail"
-                        android:layout_toRightOf="@id/ll_previous_layout_fg_attend_class_detail"
+                        android:layout_toLeftOf="@id/ll_next_layout_fg_classes"
+                        android:layout_toRightOf="@id/ll_previous_layout_fg_classes"
                         android:fadingEdge="none"
                         android:fadingEdgeLength="0dp"
                         android:focusable="false"
                         android:spacing="10dp" />
                 </RelativeLayout>
+
+
+                <!--Html文档类文件(组试题、组学案)预览-->
+
+                <LinearLayout
+                    android:id="@+id/ll_preview_content_html_layout_fg_classes"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@color/white"
+                    android:orientation="vertical"
+                    android:padding="@dimen/dimen_padding_005"
+                    android:visibility="gone"></LinearLayout>
+
+                <!--音视频-->
+                <RelativeLayout
+                    android:id="@+id/rl_video_content_layout_fg_classes"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    android:background="@android:color/white"
+                    android:flipInterval="30"
+                    android:persistentDrawingCache="animation"
+                    android:visibility="gone" />
+
             </LinearLayout>
 
-            <!--Html文档类文件(组试题、组学案)预览-->
-
-            <LinearLayout
-                android:id="@+id/ll_preview_content_layout_fg_attend_class_detail"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="@color/white"
-                android:orientation="vertical"
-                android:padding="@dimen/dimen_padding_005"
-                android:visibility="gone"></LinearLayout>
-
-            <!--音视频-->
-            <RelativeLayout
-                android:id="@+id/rl_video_content_layout_fg_classes"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_gravity="center"
-                android:background="@android:color/white"
-                android:flipInterval="30"
-                android:persistentDrawingCache="animation"
-                android:visibility="gone" />
+            <!--没有预览内容-->
 
             <ImageView
                 android:id="@+id/iv_no_preview_content_layout_fg_attend_class_detail"
@@ -271,6 +254,7 @@
                 android:background="@drawable/no_data"
                 android:scaleType="fitXY"
                 android:visibility="visible" />
+
         </LinearLayout>
 
         <View

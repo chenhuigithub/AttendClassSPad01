@@ -76,8 +76,7 @@ import static android.app.Activity.RESULT_OK;
 public class ClassesFg extends BaseNotPreLoadFg implements InterfacesCallback.ICanDoSth {
     private boolean isPrepared;// 标志位，标志已经初始化完成
     private boolean hasLoadOnce = false;// 是否已被加载过一次，第二次就不再去请求数据了
-    private String catalogIDCurr = "";// 目录ID
-    private String catalogNameCurr = "";// 目录名称
+    private String catalogID = "";// 目录ID
     private boolean isPageSelected = false;// 是否允许走viewPager滑动监听中的onPageSelected方法
     private boolean isScroll = false;// 是否正在滑动，默认未滑动
     private int prePosition;// 幻灯片展示的上一个位置
@@ -95,7 +94,6 @@ public class ClassesFg extends BaseNotPreLoadFg implements InterfacesCallback.IC
     private ArrayList<String> txtList;//txt文档类数据
     private List<VideoAudio> videoList;// 音视频列表
     private String rightInfoCount;//  预览授课资源的总个数
-    private boolean needMultiPageRequestPreview = true;//授课预览是否需要多页请求,默认需要
     private InterfacesCallback.ICanKnowSth6 picCallback;//图片回调
     private String className = "";//班级名称
     private String catalogName = "";//目录名称
@@ -122,13 +120,13 @@ public class ClassesFg extends BaseNotPreLoadFg implements InterfacesCallback.IC
     //    private PullRefreshListView prlstvFiles;//授课列表(刷新、加载的另一种实现形式)
     private ListView lstvFiles;//授课列表
     private LinearLayout llNoFile;//没有授课文件
-    private LinearLayout llWrapper01;//ppt、viewpager区域
-    private LinearLayout llPreviewContent;//预览Html区域
+    private LinearLayout llAllPreviewContent;//ppt、viewpager区域
+    private LinearLayout llPreviewContentHtml;//预览Html区域
     private RelativeLayout rlVideo;// 音视频
     private ImageView ivNoPreviewContent;// 无预览授课内容情况下的展示图片
     private View allFgView;// 总布局
     private ImageView iv;//测试图
-    private RelativeLayout rlFile;// 画廊布局：文件（PPT）缩略图展示布局
+    private RelativeLayout rlPPTGallery;// 画廊布局：文件（PPT）缩略图展示布局
     private Gallery glFile;// 画廊效果：文件（PPT）缩略图展示布局
 
 
@@ -167,12 +165,12 @@ public class ClassesFg extends BaseNotPreLoadFg implements InterfacesCallback.IC
 
             String catalogIDCurr = PreferencesUtils.acquireInfoFromPreferences(getActivity(), ConstantsForPreferencesUtils.CATALOG_ID_CHOICED);
             if (!ValidateFormatUtils.isEmpty(catalogIDCurr)) {
-                this.catalogIDCurr = catalogIDCurr;
+                this.catalogID = catalogIDCurr;
             }
 
             String catalogNameCurr = PreferencesUtils.acquireInfoFromPreferences(getActivity(), ConstantsForPreferencesUtils.CATALOG_NAME_CHOICED);
             if (!ValidateFormatUtils.isEmpty(catalogNameCurr)) {
-                this.catalogNameCurr = catalogNameCurr;
+                this.catalogName = catalogNameCurr;
             }
 
             String clName = PreferencesUtils.acquireInfoFromPreferences(getActivity(), ConstantsForPreferencesUtils.CLASS_NAME_CHOICED);
@@ -219,11 +217,11 @@ public class ClassesFg extends BaseNotPreLoadFg implements InterfacesCallback.IC
         tvCatalogName = (TextView) allFgView
                 .findViewById(R.id.tv_catalog_name_layout_fg_classes);
 
-        llWrapper01 = (LinearLayout) allFgView
+        llAllPreviewContent = (LinearLayout) allFgView
                 .findViewById(R.id.ll_wrapper01_layout_fg_attend_class_detail);
 
-        llPreviewContent = (LinearLayout) allFgView
-                .findViewById(R.id.ll_preview_content_layout_fg_attend_class_detail);
+        llPreviewContentHtml = (LinearLayout) allFgView
+                .findViewById(R.id.ll_preview_content_html_layout_fg_classes);
 
         //没有授课文件
         llNoFile = (LinearLayout) allFgView
@@ -287,7 +285,7 @@ public class ClassesFg extends BaseNotPreLoadFg implements InterfacesCallback.IC
                 String action = intent.getAction();
                 Bundle bundle = intent.getExtras();
 
-                if (ConstantsUtils.REFRESH_CLASS_INFO.equals(action)) {//刷新信息
+                if (ConstantsUtils.REFRESH_CLASS_INFO.equals(action)) {//刷新班级
                     if (bundle == null) {
                         return;
                     }
@@ -299,7 +297,12 @@ public class ClassesFg extends BaseNotPreLoadFg implements InterfacesCallback.IC
                         tvClassName.setText(className);
                     }
 
-                } else if (ConstantsUtils.REFRESH_CATALOG_INFO.equals(action)) {//刷新班级
+                    //                    if (ValidateFormatUtils.isEmpty(catalogName)) {
+                    Toast.makeText(getActivity(), "请重新选择教材目录", Toast.LENGTH_SHORT).show();
+                    switchCatalog();
+//                    }
+
+                } else if (ConstantsUtils.REFRESH_CATALOG_INFO.equals(action)) {//刷新目录
                     if (bundle == null) {
                         return;
                     }
@@ -345,12 +348,12 @@ public class ClassesFg extends BaseNotPreLoadFg implements InterfacesCallback.IC
      * @param v
      */
     private void initGallery(View v) {
-        rlFile = (RelativeLayout) v
-                .findViewById(R.id.rl_wrapper01_layout_fg_attend_class_detail);
+        rlPPTGallery = (RelativeLayout) v
+                .findViewById(R.id.rl_ppt_gallery_layout_fg_classes);
 
         // 实例化控件
         glFile = (Gallery) v
-                .findViewById(R.id.gl_file_layout_fg_attend_class_detail);
+                .findViewById(R.id.gl_ppt_layout_fg_classes);
 
 //        fileContents = new ArrayList<FileContent>();
 //        FileContent fileContent01 = new FileContent();
@@ -409,12 +412,12 @@ public class ClassesFg extends BaseNotPreLoadFg implements InterfacesCallback.IC
 
         // 上一个
         tvPrevious = (TextView) allFgView
-                .findViewById(R.id.ll_previous_layout_fg_attend_class_detail);
+                .findViewById(R.id.ll_previous_layout_fg_classes);
         tvPrevious.setOnClickListener(new Listeners());
 
         // 下一个
         tvNext = (TextView) allFgView
-                .findViewById(R.id.ll_next_layout_fg_attend_class_detail);
+                .findViewById(R.id.ll_next_layout_fg_classes);
         tvNext.setOnClickListener(new Listeners());
     }
 
@@ -431,13 +434,13 @@ public class ClassesFg extends BaseNotPreLoadFg implements InterfacesCallback.IC
                 // 重置页码
                 currentPageNumForFile = 1;
                 // 请求数据
-                requestFileListFromServer(catalogIDCurr);
+                requestFileListFromServer(catalogID);
             }
 
             @Override
             public void onMore() {
                 currentPageNumForFile = currentPageNumForFile + 1;
-                requestFileListFromServer(catalogIDCurr);
+                requestFileListFromServer(catalogID);
             }
         });
     }
@@ -445,11 +448,10 @@ public class ClassesFg extends BaseNotPreLoadFg implements InterfacesCallback.IC
     /**
      * 从服务器获取授课文件列表
      */
-    private void requestFileListFromServer(String catalogIDCurr) {
+    private void requestFileListFromServer(String catalogID) {
         DataID01 dataID01 = new DataID01();
 
-
-        dataID01.setChid(catalogIDCurr);//章节ID
+        dataID01.setChid(catalogID);//章节ID
 
         classID = PreferencesUtils.acquireInfoFromPreferences(getActivity(), ConstantsForPreferencesUtils.CLASS_ID_CHOICED);
         dataID01.setCid(classID);//班级ID
@@ -548,6 +550,7 @@ public class ClassesFg extends BaseNotPreLoadFg implements InterfacesCallback.IC
                         @Override
                         public void run() {
                             String msg = "没有更多数据啦";
+
                             showNoFileData(msg);
                         }
                     });
@@ -662,7 +665,6 @@ public class ClassesFg extends BaseNotPreLoadFg implements InterfacesCallback.IC
                 if (ConstantsForServerUtils.PPT.equals(fileFocus.getFileType())) {// 课件ppt格式
                     coursewareList = com.alibaba.fastjson.JSON.parseArray(dataArr.toString(), Courseware.class);
                     rightInfoCount = String.valueOf(coursewareList.size());
-                    needMultiPageRequestPreview = false;
 
                     uiHandler.post(new Runnable() {
                         @Override
@@ -682,7 +684,6 @@ public class ClassesFg extends BaseNotPreLoadFg implements InterfacesCallback.IC
                         resetTestList();
                         testList = com.alibaba.fastjson.JSON.parseArray(dataArr.toString(), TestData.class);
                         rightInfoCount = String.valueOf(testList.size());
-                        needMultiPageRequestPreview = false;
 
                         uiHandler.post(new Runnable() {
                             @Override
@@ -698,7 +699,6 @@ public class ClassesFg extends BaseNotPreLoadFg implements InterfacesCallback.IC
                         resetOmicsList();
                         omicsList = com.alibaba.fastjson.JSON.parseArray(dataArr.toString(), TestData.class);
                         rightInfoCount = String.valueOf(omicsList.size());
-                        needMultiPageRequestPreview = false;
 
                         uiHandler.post(new Runnable() {
                             @Override
@@ -792,8 +792,6 @@ public class ClassesFg extends BaseNotPreLoadFg implements InterfacesCallback.IC
                         DataInfo info = com.alibaba.fastjson.JSON.parseObject(
                                 jsonObj.toString(), DataInfo.class);
 
-                        needMultiPageRequestPreview = true;
-
                         planList.add(info);
                         if (planList.size() < Integer.parseInt(rightInfoCount)) {//循环请求单页数据
                             currentPageNumForPreview = currentPageNumForPreview + 1;
@@ -811,29 +809,11 @@ public class ClassesFg extends BaseNotPreLoadFg implements InterfacesCallback.IC
                                 public void run() {
                                     previewWord();
 
-                                    llWrapper01.setVisibility(View.VISIBLE);
+                                    llAllPreviewContent.setVisibility(View.VISIBLE);
                                     setVPagerAdapter(0);
                                 }
                             });
                         }
-
-//                        if (planList.size() == 0) {
-//                            planList.add(info);
-//
-//                            // 造一个假数据放到尾端，便于viewPager滑动监听
-//                            planList.add(new DataInfo());
-//                        } else if (planList.size() > 1) {
-//                            planList.remove(planList.size() - 1);// 先去掉尾端的假数据
-//                            planList.add(planList.size(), info);// 在尾端加上新数据
-//
-//                            if (String.valueOf(planList.size()).equals(rightInfoCount)) {//最后一条数据的情况
-//                            } else {
-//                                // 造一个假数据放到尾端，便于viewPager滑动监听
-//                                planList.add(new DataInfo());
-//                            }
-//                        }
-//
-//                    }
                     }
 
                     hasLoadOnce = true;
@@ -867,7 +847,7 @@ public class ClassesFg extends BaseNotPreLoadFg implements InterfacesCallback.IC
         if (fg.isAdded()) {
             transaction.show(fg).commit();
         } else {
-            transaction.replace(R.id.ll_preview_content_layout_fg_attend_class_detail, fg).commit();//替换为名称为A的fragment并显示它
+            transaction.replace(R.id.ll_preview_content_html_layout_fg_classes, fg).commit();//替换为名称为A的fragment并显示它
         }
     }
 
@@ -979,18 +959,18 @@ public class ClassesFg extends BaseNotPreLoadFg implements InterfacesCallback.IC
     private void setPicVPagerAdapter(int position) {
         // 设置适配器
         if (picVpagerAdapter == null) {
-            picVpagerAdapter = new CustomPagerAdapter03(getActivity(),
-                    coursewareList);
-            vpager.setAdapter(picVpagerAdapter);
+        picVpagerAdapter = new CustomPagerAdapter03(getActivity(),
+                coursewareList);
+        vpager.setAdapter(picVpagerAdapter);
 
-            // 默认设置到中间的某个位置
-            // if (coursewareList.size() > 0) {
-            // int pos = Integer.MAX_VALUE / 2
-            // - (Integer.MAX_VALUE / 2 % rightInfoList.size());
-            // 2147483647 / 2 = 1073741823 - (1073741823 % 5)
-            // }
+        // 默认设置到中间的某个位置
+        // if (coursewareList.size() > 0) {
+        // int pos = Integer.MAX_VALUE / 2
+        // - (Integer.MAX_VALUE / 2 % rightInfoList.size());
+        // 2147483647 / 2 = 1073741823 - (1073741823 % 5)
+        // }
         } else {
-            // 刷新布局
+        // 刷新布局
             picVpagerAdapter.notifyDataSetChanged();
         }
 
@@ -1034,18 +1014,18 @@ public class ClassesFg extends BaseNotPreLoadFg implements InterfacesCallback.IC
     private void setHtmlVPagerAdapter(int position) {
         // 设置适配器
         if (wordVPagerAdapter == null) {
-            wordVPagerAdapter = new CustomPagerAdapter04(getActivity(),
-                    planList);
-            vpager.setAdapter(wordVPagerAdapter);
+        wordVPagerAdapter = new CustomPagerAdapter04(getActivity(),
+                planList);
+        vpager.setAdapter(wordVPagerAdapter);
 
-            // 默认设置到中间的某个位置
-            // if (rightInfoList.size() > 0) {
-            // int pos = Integer.MAX_VALUE / 2
-            // - (Integer.MAX_VALUE / 2 % rightInfoList.size());
-            // 2147483647 / 2 = 1073741823 - (1073741823 % 5)
-            // }
+        // 默认设置到中间的某个位置
+        // if (rightInfoList.size() > 0) {
+        // int pos = Integer.MAX_VALUE / 2
+        // - (Integer.MAX_VALUE / 2 % rightInfoList.size());
+        // 2147483647 / 2 = 1073741823 - (1073741823 % 5)
+        // }
         } else {
-            // 刷新布局
+        // 刷新布局
             wordVPagerAdapter.notifyDataSetChanged();
         }
 
@@ -1060,12 +1040,9 @@ public class ClassesFg extends BaseNotPreLoadFg implements InterfacesCallback.IC
      */
     private void showNoPreviewContent(String msg) {
         resetAllPreviewContentData();
+
         resetAllPreviewContentWidgets();
-
-//        setVPagerAdapter(0);
-//        llWrapper01.setVisibility(View.GONE);
         ivNoPreviewContent.setVisibility(View.VISIBLE);
-
 
         Toast.makeText(getActivity(), msg, Toast.LENGTH_SHORT).show();
         vUtils.dismissDialog();
@@ -1078,6 +1055,12 @@ public class ClassesFg extends BaseNotPreLoadFg implements InterfacesCallback.IC
         setPicVPagerAdapter(0);
         setWordVPagerAdapter(0);
         setHtmlVPagerAdapter(0);
+
+        llPreviewContentHtml.setVisibility(View.GONE);
+        llAllPreviewContent.setVisibility(View.GONE);
+        vpager.setVisibility(View.GONE);
+        rlPPTGallery.setVisibility(View.GONE);
+
 //        showNoPreviewPPT();
 //        showNoPreviewWord();
 //        showNoPreviewPic();
@@ -1089,91 +1072,53 @@ public class ClassesFg extends BaseNotPreLoadFg implements InterfacesCallback.IC
      * 展示PPT课件，以ViewPager滑动+缩略图方式展示
      */
     private void previewPPT() {
-        llWrapper01.setVisibility(View.VISIBLE);
+        llAllPreviewContent.setVisibility(View.VISIBLE);
 
+        vpager.setVisibility(View.VISIBLE);
         //画廊
-        rlFile.setVisibility(View.VISIBLE);
-
-//        llPreviewContent.setVisibility(View.GONE);
+        rlPPTGallery.setVisibility(View.VISIBLE);
     }
 
-    /**
-     * 展示PPT课件，以ViewPager滑动+缩略图方式展示
-     */
-    private void showNoPreviewPPT() {
-        llWrapper01.setVisibility(View.GONE);
-
-        //画廊
-        rlFile.setVisibility(View.GONE);
-
-        llPreviewContent.setVisibility(View.GONE);
-    }
 
     /**
      * 展示word格式文件，以ViewPager滑动方式展示
      */
     private void previewWord() {
-        llWrapper01.setVisibility(View.VISIBLE);
+        llAllPreviewContent.setVisibility(View.VISIBLE);
 
         //画廊
-        rlFile.setVisibility(View.GONE);
+//        rlPPTGallery.setVisibility(View.GONE);
+        vpager.setVisibility(View.VISIBLE);
 
-        llPreviewContent.setVisibility(View.GONE);
+        llPreviewContentHtml.setVisibility(View.GONE);
     }
 
-    /**
-     * 展示word格式文件，以ViewPager滑动方式展示
-     */
-    private void showNoPreviewWord() {
-        llWrapper01.setVisibility(View.VISIBLE);
-
-        //画廊
-        rlFile.setVisibility(View.GONE);
-
-        llPreviewContent.setVisibility(View.GONE);
-    }
 
     /**
      * 展示Html格式文件（如组学案、组试题），以普通上下滑动方式展示
      */
     private void previewHtml() {
-        llWrapper01.setVisibility(View.GONE);
+        llAllPreviewContent.setVisibility(View.VISIBLE);
 
-        llPreviewContent.setVisibility(View.VISIBLE);
+        llPreviewContentHtml.setVisibility(View.VISIBLE);
     }
 
-    /**
-     * 展示Html格式文件（如组学案、组试题），以普通上下滑动方式展示
-     */
-    private void showNoPreviewHtml() {
-        llWrapper01.setVisibility(View.GONE);
-
-        llPreviewContent.setVisibility(View.GONE);
-    }
 
     /**
      * 展示图片文件，以gridView方式展示
      */
     private void previewPic() {
-        llWrapper01.setVisibility(View.GONE);
+        llAllPreviewContent.setVisibility(View.VISIBLE);
 
-        llPreviewContent.setVisibility(View.VISIBLE);
+        llPreviewContentHtml.setVisibility(View.VISIBLE);
     }
 
-    /**
-     * 展示图片文件，以gridView方式展示
-     */
-    private void showNoPreviewPic() {
-        llWrapper01.setVisibility(View.GONE);
-
-        llPreviewContent.setVisibility(View.GONE);
-    }
 
     /**
      * 展示音视频
      */
     private void previewAudioVideo(List<VideoAudio> videoList) {
-        llWrapper01.setVisibility(View.GONE);
+        llAllPreviewContent.setVisibility(View.VISIBLE);
 
         //画廊
 //        rlFile.setVisibility(View.GONE);
@@ -1186,22 +1131,6 @@ public class ClassesFg extends BaseNotPreLoadFg implements InterfacesCallback.IC
         initVideo(videoCurr);
     }
 
-    /**
-     * 隐藏音视频
-     */
-    private void showNoPreviewAudioVideo() {
-        llWrapper01.setVisibility(View.GONE);
-
-        //画廊
-//        rlFile.setVisibility(View.GONE);
-//        llPreviewContent.setVisibility(View.GONE);
-
-        rlVideo.setVisibility(View.GONE);
-
-        // 初始化视频
-//        videoCurr = new VideoAudio();
-//        initVideo(videoCurr);
-    }
 
     private ArrayList<String> getTxtList(JSONArray dataArr) {
         String str = "";
@@ -1320,12 +1249,12 @@ public class ClassesFg extends BaseNotPreLoadFg implements InterfacesCallback.IC
             // 目录名称
             String catalogNameCurr = bundle.getString(ConstantsUtils.CATALOG_NAME);
             if (!ValidateFormatUtils.isEmpty(catalogNameCurr)) {
-                this.catalogNameCurr = catalogNameCurr;
+                this.catalogName = catalogNameCurr;
                 tvCatalogName.setText(catalogNameCurr);
             }
 
             if (!ValidateFormatUtils.isEmpty(catalogIDCurr)) {
-                this.catalogIDCurr = catalogIDCurr;
+                this.catalogID = catalogIDCurr;
                 requestFileListFromServer(catalogIDCurr);
             } else {
                 llNoFile.setVisibility(View.VISIBLE);
@@ -1353,24 +1282,21 @@ public class ClassesFg extends BaseNotPreLoadFg implements InterfacesCallback.IC
             switchCatalog();
         }
 
-        boolean hasChoiced = PreferencesUtils.acquireBooleanInfoFromPreferences(getActivity(), ConstantsUtils.HAS_CHOICED_MATERIAL);
-        if (hasChoiced) {
-
-        }
-        catalogNameCurr = PreferencesUtils.acquireInfoFromPreferences(getActivity(), ConstantsForPreferencesUtils.CLASS_NAME_CHOICED);
-        if (tvClassName != null && !TextUtils.isEmpty(catalogNameCurr)) {
-            tvClassName.setText(catalogNameCurr);
+        catalogName = PreferencesUtils.acquireInfoFromPreferences(getActivity(), ConstantsForPreferencesUtils.CLASS_NAME_CHOICED);
+        if (tvClassName != null && !TextUtils.isEmpty(catalogName)) {
+            tvClassName.setText(catalogName);
         }
 
-        String classID = PreferencesUtils.acquireInfoFromPreferences(getActivity(), ConstantsForPreferencesUtils.CLASS_ID_CHOICED);
-        if (!TextUtils.isEmpty(classID)) {
-            this.classID = classID;
+//        String classID = PreferencesUtils.acquireInfoFromPreferences(getActivity(), ConstantsForPreferencesUtils.CLASS_ID_CHOICED);
+//        if (!TextUtils.isEmpty(classID)) {
+//            this.classID = classID;
+//        }
+
+        //获取授课列表
+        if (!ValidateFormatUtils.isEmpty(catalogID)) {
+            requestFileListFromServer(catalogID);
         }
 
-        String catalogIDCurr = PreferencesUtils.acquireInfoFromPreferences(getActivity(), ConstantsForPreferencesUtils.CATALOG_ID_CHOICED);
-        if (!TextUtils.isEmpty(catalogIDCurr)) {
-            requestFileListFromServer(catalogIDCurr);
-        }
     }
 
     @Override
@@ -1391,6 +1317,16 @@ public class ClassesFg extends BaseNotPreLoadFg implements InterfacesCallback.IC
 
                 break;
         }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+//        if (ValidateFormatUtils.isEmpty(catalogName)) {
+//            Toast.makeText(getActivity(), "请重新选择教材目录", Toast.LENGTH_SHORT).show();
+//            switchCatalog();
+//        }
     }
 
     /**
@@ -1433,17 +1369,6 @@ public class ClassesFg extends BaseNotPreLoadFg implements InterfacesCallback.IC
             // System.out.println("onPageSelected: " + arriveIndex);
 
             newPosition = arriveIndex % Integer.valueOf(rightInfoCount);
-//            if (isPageSelected && newPosition > positionMax) {// 正向向右滑动的情况
-//                if (newPosition == 1) {
-//                    currentPageNumForPreview = newPosition + 1;
-//                }
-//                positionMax = newPosition;
-//                if (fileFocus != null && needMultiPageRequestPreview) {
-//                    vUtils.showLoadingDialog("");
-//                    String ID = fileFocus.getDataID();
-//                    requestFileDetailFromServer(fileType, ID);
-//                }
-//            }
 
             if (ConstantsForServerUtils.PPT.equals(fileFocus.getFileType())) {
                 setGridViewAdapter(newPosition);
