@@ -43,6 +43,7 @@ import com.example.attendclassspad01.model.Classes;
 import com.example.attendclassspad01.model.VideoAndAudioInfoModel;
 import com.example.attendclassspad01.model.VideoAudio;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
@@ -135,6 +136,8 @@ public class MainActivity extends FragmentActivity implements InterfacesCallback
         hasLogined = PreferencesUtils.acquireBooleanInfoFromPreferences(this, ConstantsForPreferencesUtils.HAS_LOGINED);
         if (!hasLogined) {//若未登录先去登录
             toLoginPage();
+
+            finish();
 
         } else {
             //若已登录展示信息
@@ -449,7 +452,10 @@ public class MainActivity extends FragmentActivity implements InterfacesCallback
 
     @Override
     public void doSwitchFullScreen(List<VideoAudio> list, VideoAudio info) {
-
+        Intent intent = new Intent(MainActivity.this, PlayVideoActivity.class);
+        intent.putExtra(ConstantsUtils.VIDEO_LIST, (Serializable) list);
+        intent.putExtra(ConstantsUtils.VIDEO, (Serializable) info);
+        startActivity(intent);
     }
 
     @Override

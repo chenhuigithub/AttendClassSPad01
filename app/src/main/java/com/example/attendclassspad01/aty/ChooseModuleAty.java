@@ -39,6 +39,13 @@ import java.util.List;
  * 选择模块界面
  */
 public class ChooseModuleAty extends Activity {
+    /**
+     * 跳转方式：回传式
+     */
+    public static String RETURN_ACTIVITY = "RETURN_ACTIVITY";
+    public static String INTENT_TYPE = "INTENT_TYPE";// 跳转方式
+    private String intentType = "";//跳转方式
+
     private List<Classes> classList;// 班级列表
     private String classesIDCurr = "";//当前选中的班级ID
 
@@ -65,9 +72,20 @@ public class ChooseModuleAty extends Activity {
         vUtils = new ViewUtils(this);
         uiHandler = new Handler(getMainLooper());
 
+        dealWithExtras();
+
         initView();
 
         requestClassFromServer();
+    }
+
+    private void dealWithExtras() {
+        Bundle bundle = getIntent().getExtras();
+        if (bundle == null) {
+            return;
+        }
+
+        intentType = bundle.getString(INTENT_TYPE);
     }
 
     private void initView() {
@@ -269,6 +287,13 @@ public class ChooseModuleAty extends Activity {
                 // 发送广播
                 LocalBroadcastManager.getInstance(ChooseModuleAty.this)
                         .sendBroadcast(intentAction);
+
+                if (RETURN_ACTIVITY.equals(intentType)) {
+                    setResult(RESULT_OK);
+                } else {
+                    Intent intent = new Intent(ChooseModuleAty.this, MainActivity.class);
+                    startActivity(intent);
+                }
 
                 finish();
             }

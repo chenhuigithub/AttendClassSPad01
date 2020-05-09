@@ -285,35 +285,33 @@ public class ClassesFg extends BaseNotPreLoadFg implements InterfacesCallback.IC
                 String action = intent.getAction();
                 Bundle bundle = intent.getExtras();
 
-                if (ConstantsUtils.REFRESH_CLASS_INFO.equals(action)) {//刷新班级
-                    if (bundle == null) {
-                        return;
-                    }
-
-
-                    String clName = PreferencesUtils.acquireInfoFromPreferences(getActivity(), ConstantsForPreferencesUtils.CLASS_NAME_CHOICED);
-                    if (!ValidateFormatUtils.isEmpty(clName)) {
-                        className = clName;
-                        tvClassName.setText(className);
-                    }
-
-                    //                    if (ValidateFormatUtils.isEmpty(catalogName)) {
-                    Toast.makeText(getActivity(), "请重新选择教材目录", Toast.LENGTH_SHORT).show();
-                    switchCatalog();
+//                if (ConstantsUtils.REFRESH_CLASS_INFO.equals(action)) {//刷新班级
+//                    if (bundle == null) {
+//                        return;
 //                    }
-
-                } else if (ConstantsUtils.REFRESH_CATALOG_INFO.equals(action)) {//刷新目录
-                    if (bundle == null) {
-                        return;
-                    }
-
-
-                    String caName = PreferencesUtils.acquireInfoFromPreferences(getActivity(), ConstantsForPreferencesUtils.CATALOG_NAME_CHOICED);
-                    if (!ValidateFormatUtils.isEmpty(caName)) {
-                        catalogName = caName;
-                        tvCatalogName.setText(catalogName);
-                    }
-                }
+//
+//
+//                    String clName = PreferencesUtils.acquireInfoFromPreferences(getActivity(), ConstantsForPreferencesUtils.CLASS_NAME_CHOICED);
+//                    if (!ValidateFormatUtils.isEmpty(clName)) {
+//                        className = clName;
+//                        tvClassName.setText(className);
+//                    }
+//
+//                    Toast.makeText(getActivity(), "请重新选择教材目录", Toast.LENGTH_SHORT).show();
+//                    switchCatalog();
+//                } else
+//                    if (ConstantsUtils.REFRESH_CATALOG_INFO.equals(action)) {//刷新目录
+//                    if (bundle == null) {
+//                        return;
+//                    }
+//
+//
+//                    String caName = PreferencesUtils.acquireInfoFromPreferences(getActivity(), ConstantsForPreferencesUtils.CATALOG_NAME_CHOICED);
+//                    if (!ValidateFormatUtils.isEmpty(caName)) {
+//                        catalogName = caName;
+//                        tvCatalogName.setText(catalogName);
+//                    }
+//                }
             }
         };
         broadcastManager.registerReceiver(receiver, filter);
@@ -644,7 +642,7 @@ public class ClassesFg extends BaseNotPreLoadFg implements InterfacesCallback.IC
     private void dealWithPreviewData(JSONArray dataArr) {
         if (dataArr != null) {
 //        if (true) {
-//            fileType = ConstantsForServerUtils.VIDEO;
+//            fileFocus.setFileType(ConstantsForServerUtils.VIDEO);
 
             if (dataArr.length() == 0) {
                 uiHandler.post(new Runnable() {
@@ -652,6 +650,8 @@ public class ClassesFg extends BaseNotPreLoadFg implements InterfacesCallback.IC
                     public void run() {
                         String msg = "暂无预览，切换别的文件试试";
                         showNoPreviewContent(msg);
+
+                        vUtils.dismissDialog();
                     }
                 });
             } else {
@@ -688,6 +688,8 @@ public class ClassesFg extends BaseNotPreLoadFg implements InterfacesCallback.IC
                         uiHandler.post(new Runnable() {
                             @Override
                             public void run() {
+                                resetAllPreviewContentWidgets();
+
                                 previewHtml();
                                 PreviewTestFg fg = new PreviewTestFg(testList, true);
                                 setFgContent(fg);
@@ -703,6 +705,8 @@ public class ClassesFg extends BaseNotPreLoadFg implements InterfacesCallback.IC
                         uiHandler.post(new Runnable() {
                             @Override
                             public void run() {
+                                resetAllPreviewContentWidgets();
+
                                 previewHtml();
                                 PreviewOmicsFg fg = new PreviewOmicsFg(omicsList, true);
                                 setFgContent(fg);
@@ -718,6 +722,10 @@ public class ClassesFg extends BaseNotPreLoadFg implements InterfacesCallback.IC
                     uiHandler.post(new Runnable() {
                         @Override
                         public void run() {
+                            resetAllPreviewContentWidgets();
+
+                            previewTxt();
+
                             PreviewTxtFg wordFg = new PreviewTxtFg(txtList);
 //                            txtCallback = (InterfacesCallback.ICanKnowSth8) wordFg;
                             setFgContent(wordFg);
@@ -731,6 +739,8 @@ public class ClassesFg extends BaseNotPreLoadFg implements InterfacesCallback.IC
                         uiHandler.post(new Runnable() {
                             @Override
                             public void run() {
+                                resetAllPreviewContentWidgets();
+
                                 previewPic();
 
                                 PreviewPicFg fg = new PreviewPicFg(picList);
@@ -748,12 +758,11 @@ public class ClassesFg extends BaseNotPreLoadFg implements InterfacesCallback.IC
                     } catch (JSONException e) {
                         e.printStackTrace();
 
-//                        ivNoData.setVisibility(View.VISIBLE);
-//                        tvNum.setVisibility(View.GONE);
                         Toast.makeText(getActivity(), "数据返回不合规范！", Toast.LENGTH_SHORT).show();
                     }
 
                     resetVideoList();
+                    //测试视频路径
                     url = "/upload/extend/video/201807/06/201807061457305988.mp4";
 
                     if (videoList != null && !TextUtils.isEmpty(url)) {
@@ -767,6 +776,8 @@ public class ClassesFg extends BaseNotPreLoadFg implements InterfacesCallback.IC
                         uiHandler.post(new Runnable() {
                             @Override
                             public void run() {
+                                resetAllPreviewContentWidgets();
+
                                 previewAudioVideo(videoList);
 
                                 vUtils.dismissDialog();
@@ -807,10 +818,12 @@ public class ClassesFg extends BaseNotPreLoadFg implements InterfacesCallback.IC
                             uiHandler.post(new Runnable() {
                                 @Override
                                 public void run() {
+                                    resetAllPreviewContentWidgets();
                                     previewWord();
 
-                                    llAllPreviewContent.setVisibility(View.VISIBLE);
                                     setVPagerAdapter(0);
+
+                                    vUtils.dismissDialog();
                                 }
                             });
                         }
@@ -825,16 +838,18 @@ public class ClassesFg extends BaseNotPreLoadFg implements InterfacesCallback.IC
                 public void run() {
                     String msg = "暂无预览，切换文件试试？";
                     showNoPreviewContent(msg);
+
+                    vUtils.dismissDialog();
                 }
             });
         }
 
-        uiHandler.post(new Runnable() {
-            @Override
-            public void run() {
-                vUtils.dismissDialog();
-            }
-        });
+//        uiHandler.post(new Runnable() {
+//            @Override
+//            public void run() {
+//                vUtils.dismissDialog();
+//            }
+//        });
     }
 
     /**
@@ -920,11 +935,8 @@ public class ClassesFg extends BaseNotPreLoadFg implements InterfacesCallback.IC
 
         vpager.removeAllViews();
 
-        resetAllPreviewContentWidgets();
-
         if (ConstantsForServerUtils.PPT.equals(fileFocus.getFileType()) || ConstantsForServerUtils.IMAGES.equals(fileFocus.getFileType())) {// 图片类
             setPicVPagerAdapter(position);
-        } else if (ConstantsForServerUtils.HTML.equals(fileFocus.getFileType())) {//试题、学案Html类型
         } else {// 文字格式（学案、教案、试题、文档）等
             setWordVPagerAdapter(position);
         }
@@ -958,7 +970,7 @@ public class ClassesFg extends BaseNotPreLoadFg implements InterfacesCallback.IC
      */
     private void setPicVPagerAdapter(int position) {
         // 设置适配器
-        if (picVpagerAdapter == null) {
+//        if (picVpagerAdapter == null) {
         picVpagerAdapter = new CustomPagerAdapter03(getActivity(),
                 coursewareList);
         vpager.setAdapter(picVpagerAdapter);
@@ -969,10 +981,10 @@ public class ClassesFg extends BaseNotPreLoadFg implements InterfacesCallback.IC
         // - (Integer.MAX_VALUE / 2 % rightInfoList.size());
         // 2147483647 / 2 = 1073741823 - (1073741823 % 5)
         // }
-        } else {
+//        } else {
         // 刷新布局
-            picVpagerAdapter.notifyDataSetChanged();
-        }
+//            picVpagerAdapter.notifyDataSetChanged();
+//        }
 
         // 重置文字适配器
 //        wordVPagerAdapter = null;
@@ -986,21 +998,21 @@ public class ClassesFg extends BaseNotPreLoadFg implements InterfacesCallback.IC
      */
     private void setWordVPagerAdapter(int position) {
         // 设置适配器
-        if (wordVPagerAdapter == null) {
-            wordVPagerAdapter = new CustomPagerAdapter04(getActivity(),
-                    planList);
-            vpager.setAdapter(wordVPagerAdapter);
+//        if (wordVPagerAdapter == null) {
+        wordVPagerAdapter = new CustomPagerAdapter04(getActivity(),
+                planList);
+        vpager.setAdapter(wordVPagerAdapter);
 
-            // 默认设置到中间的某个位置
-            // if (rightInfoList.size() > 0) {
-            // int pos = Integer.MAX_VALUE / 2
-            // - (Integer.MAX_VALUE / 2 % rightInfoList.size());
-            // 2147483647 / 2 = 1073741823 - (1073741823 % 5)
-            // }
-        } else {
-            // 刷新布局
-            wordVPagerAdapter.notifyDataSetChanged();
-        }
+        // 默认设置到中间的某个位置
+        // if (rightInfoList.size() > 0) {
+        // int pos = Integer.MAX_VALUE / 2
+        // - (Integer.MAX_VALUE / 2 % rightInfoList.size());
+        // 2147483647 / 2 = 1073741823 - (1073741823 % 5)
+        // }
+//        } else {
+        // 刷新布局
+//            wordVPagerAdapter.notifyDataSetChanged();
+//        }
 
         // 重置图片适配器
 //        picVpagerAdapter = null;
@@ -1013,7 +1025,7 @@ public class ClassesFg extends BaseNotPreLoadFg implements InterfacesCallback.IC
      */
     private void setHtmlVPagerAdapter(int position) {
         // 设置适配器
-        if (wordVPagerAdapter == null) {
+//        if (wordVPagerAdapter == null) {
         wordVPagerAdapter = new CustomPagerAdapter04(getActivity(),
                 planList);
         vpager.setAdapter(wordVPagerAdapter);
@@ -1024,10 +1036,10 @@ public class ClassesFg extends BaseNotPreLoadFg implements InterfacesCallback.IC
         // - (Integer.MAX_VALUE / 2 % rightInfoList.size());
         // 2147483647 / 2 = 1073741823 - (1073741823 % 5)
         // }
-        } else {
+//        } else {
         // 刷新布局
-            wordVPagerAdapter.notifyDataSetChanged();
-        }
+//            wordVPagerAdapter.notifyDataSetChanged();
+//        }
 
         // 重置图片适配器
 //        picVpagerAdapter = null;
@@ -1060,12 +1072,6 @@ public class ClassesFg extends BaseNotPreLoadFg implements InterfacesCallback.IC
         llAllPreviewContent.setVisibility(View.GONE);
         vpager.setVisibility(View.GONE);
         rlPPTGallery.setVisibility(View.GONE);
-
-//        showNoPreviewPPT();
-//        showNoPreviewWord();
-//        showNoPreviewPic();
-//        showNoPreviewHtml();
-//        showNoPreviewAudioVideo();
     }
 
     /**
@@ -1087,10 +1093,7 @@ public class ClassesFg extends BaseNotPreLoadFg implements InterfacesCallback.IC
         llAllPreviewContent.setVisibility(View.VISIBLE);
 
         //画廊
-//        rlPPTGallery.setVisibility(View.GONE);
         vpager.setVisibility(View.VISIBLE);
-
-        llPreviewContentHtml.setVisibility(View.GONE);
     }
 
 
@@ -1098,6 +1101,15 @@ public class ClassesFg extends BaseNotPreLoadFg implements InterfacesCallback.IC
      * 展示Html格式文件（如组学案、组试题），以普通上下滑动方式展示
      */
     private void previewHtml() {
+        llAllPreviewContent.setVisibility(View.VISIBLE);
+
+        llPreviewContentHtml.setVisibility(View.VISIBLE);
+    }
+
+    /**
+     * 展示txt格式文件（如文档等），以普通上下滑动方式展示
+     */
+    private void previewTxt() {
         llAllPreviewContent.setVisibility(View.VISIBLE);
 
         llPreviewContentHtml.setVisibility(View.VISIBLE);
@@ -1235,7 +1247,7 @@ public class ClassesFg extends BaseNotPreLoadFg implements InterfacesCallback.IC
     }
 
     @Override
-    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
         if (requestCode == ConstantsUtils.REQUEST_CODE01 && resultCode == RESULT_OK) {// 从选择教材界面回传数据
@@ -1265,8 +1277,16 @@ public class ClassesFg extends BaseNotPreLoadFg implements InterfacesCallback.IC
 
                 Toast.makeText(getActivity(), "目录ID为空，请重新选择目录", Toast.LENGTH_SHORT).show();
             }
+        } else if (requestCode == ConstantsUtils.REQUEST_CODE02 && resultCode == RESULT_OK) {//从选择班级模块界面回传数据
 
+            String clName = PreferencesUtils.acquireInfoFromPreferences(getActivity(), ConstantsForPreferencesUtils.CLASS_NAME_CHOICED);
+            if (!ValidateFormatUtils.isEmpty(clName)) {
+                className = clName;
+                tvClassName.setText(className);
+            }
 
+            Toast.makeText(getActivity(), "请重新选择教材目录", Toast.LENGTH_SHORT).show();
+            switchCatalog();
         }
     }
 
@@ -1387,8 +1407,9 @@ public class ClassesFg extends BaseNotPreLoadFg implements InterfacesCallback.IC
             switch (v.getId()) {
                 case R.id.rl_wrapper_switch_class_layout_fg_classes://切换班级
                     Intent intent = new Intent(getActivity(), ChooseModuleAty.class);
-//                    startActivityForResult(intent, ConstantsUtils.REQUEST_CODE01);
-                    startActivity(intent);
+                    intent.putExtra(ChooseModuleAty.INTENT_TYPE, ChooseModuleAty.RETURN_ACTIVITY);//回传式跳转
+                    startActivityForResult(intent, ConstantsUtils.REQUEST_CODE02);
+//                    startActivity(intent);
 
                     break;
 

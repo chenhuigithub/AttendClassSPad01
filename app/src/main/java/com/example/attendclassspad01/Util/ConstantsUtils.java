@@ -48,6 +48,10 @@ public class ConstantsUtils {
      * 101
      */
     public final static int REQUEST_CODE01 = 101;
+    /**
+     * 102
+     */
+    public final static int REQUEST_CODE02 = 102;
 
     /**
      * 目录ID
@@ -270,4 +274,14 @@ public class ConstantsUtils {
      * 路径
      */
     public static final String PATH = "PATH";
+
+
+    /**
+     * 视频列表
+     */
+    public static final String VIDEO_LIST = "VIDEO_LIST";
+    /**
+     * 视频
+     */
+    public static final String VIDEO = "VIDEO";
 }

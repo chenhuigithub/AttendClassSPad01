@@ -89,6 +89,14 @@
             android:screenOrientation="fullSensor"
             android:theme="@android:style/Theme.NoTitleBar.Fullscreen"></activity>
 
+        <!--视频全屏-->
+        <activity
+            android:name="com.example.attendclassspad01.aty.PlayVideoActivity"
+            android:configChanges="orientation|screenSize|keyboardHidden"
+            android:label="@string/app_name"
+            android:screenOrientation="fullSensor"
+            android:theme="@android:style/Theme.NoTitleBar.Fullscreen"></activity>
+
     </application>
 
 </manifest>
