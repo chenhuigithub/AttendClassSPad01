@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.text.TextUtils;
 import android.view.KeyEvent;
+import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
@@ -36,6 +37,7 @@ import com.example.attendclassspad01.adapter.KeyValueAdapter;
 import com.example.attendclassspad01.model.Catalog;
 import com.example.attendclassspad01.model.KeyValue;
 import com.example.attendclassspad01.model.Model;
+import com.example.attendclassspad01.view.CustomGridView01;
 import com.example.attendclassspad01.view.CustomListView;
 import com.google.gson.Gson;
 
@@ -87,18 +89,6 @@ public class ChoiceCatalogAty extends Activity {
     private ArrayList<String> ids;// 存放id数据的字符串组合
     private String lastType;// 最后一步点击操作的类型，例如：xd
 
-    KeyValueAdapter pGdvAdapter;
-    KeyValueAdapter sGdvAdapter;
-    KeyValueAdapter eGdvAdapter;
-    KeyValueAdapter mGdvAdapter;
-
-    private GridView gdvPeriod;// 学段
-    private GridView gdvSubject;// 学科
-    private GridView gdvEdition;// 版本
-    private GridView gdvModule;// 模块
-    //    private GridView gdvCatalog;// 目录
-    private ListView lvCatalog;// 目录
-
     private List<KeyValue> periodList;//学段
     private List<KeyValue> subjectList;//学科
     private List<KeyValue> editionList;//版本
@@ -110,24 +100,31 @@ public class ChoiceCatalogAty extends Activity {
 //    private KeyValue moduleSelected;// 已选模块
     private KeyValue catelogSelected;// 已选目录
     private String jsonLastId = "";// 最后一步点击操作的数据id（后台这么设计，木办法。。。）
+    // 课程目录
+//    private List<Course> catalogList;
+    private List<Catalog> catalogList;
+    private String unitIDCurr;
 
     private FragmentManager manager;
     private CatalogAdapter cAdapter;
 
-    private TextView tvLast;
-
-    // 课程目录
-//    private List<Course> catalogList;
-    private List<Catalog> catalogList;
-
-    String unitIDCurr;
-
+    KeyValueAdapter pGdvAdapter;
+    KeyValueAdapter sGdvAdapter;
+    KeyValueAdapter eGdvAdapter;
+    KeyValueAdapter mGdvAdapter;
     private CourseCatalogLsvAdapter catalogLstvAdapter;// 目录
-
-    private CustomListView lsvCourseCatalog;// 课程目录
-
     private Handler uiHandler;// ui主线程
     private ViewUtils vUtils;// 布局工具
+
+
+    private GridView gdvPeriod;// 学段
+    private GridView gdvSubject;// 学科
+    //    private GridView gdvEdition;// 版本
+//    private GridView gdvModule;// 模块
+    private CustomGridView01 gdvEdition1;//版本
+    private CustomGridView01 gdvModule1;// 模块
+    private CustomListView lsvCourseCatalog;// 课程目录
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -156,8 +153,12 @@ public class ChoiceCatalogAty extends Activity {
         gdvPeriod = (GridView) findViewById(R.id.gdv_period_layout_fg_attend_class);
         gdvSubject = (GridView) findViewById(R.id.gdv_subject_layout_fg_attend_class);
 
-        gdvEdition = (GridView) findViewById(R.id.gdv_edition_layout_fg_attend_class);
-        gdvModule = (GridView) findViewById(R.id.gdv_module_layout_fg_attend_class);
+//        gdvEdition = (GridView) findViewById(R.id.gdv_edition_layout_fg_attend_class);
+//        gdvModule = (GridView) findViewById(R.id.gdv_module_layout_fg_attend_class);
+
+        gdvEdition1 = (CustomGridView01) findViewById(R.id.gdv_edition1_layout_v_choice_material);
+        gdvModule1 = (CustomGridView01) findViewById(R.id.gdv_module1_layout_v_choice_material);
+
 
         initLstvForCatalog();
 
@@ -238,31 +239,115 @@ public class ChoiceCatalogAty extends Activity {
         gdvSubject.setAdapter(sGdvAdapter);
     }
 
-    private void setGdvEditionAdapter(int pos, String currentID) {
-        // 版本
-//        final String[] editions = getResources().getStringArray(
-//                R.array.arrays_versions);
-//        List<String> editionsList = Utils.getList(editions);
-//        final PeriodGridAdapter eGdvAdapter = new PeriodGridAdapter(this,
-//                editionsList);
 
-        eGdvAdapter = new KeyValueAdapter(this, editionList);
-        eGdvAdapter.setCurrentPosition(pos);
-        eGdvAdapter.setCurrentID(currentID);
-        gdvEdition.setAdapter(eGdvAdapter);
+    /**
+     * 展示版本Gdv布局
+     *
+     * @param list 数据
+     */
+    public void showGdvEdition(final List<KeyValue> list, CustomGridView01 gdv) {
+        resetGdvLayout(gdv);
+
+        for (int i = 0; i < list.size(); i++) {
+            final KeyValue kv = list.get(i);
+//            kv.setName("测试模块名");
+//            kv.setId("ceshi_edition_id");
+//            kv.setChoiced(false);
+
+            View vItem = LayoutInflater.from(this).inflate(R.layout.layout_v_single_line, null);
+            TextView tvName = vItem.findViewById(R.id.tv_layout_v_single_line);
+            tvName.setText(list.get(i).getName());
+//            tvName.setText("测试模块名");
+            gdv.addChild(vItem);
+
+            if (kv != null) {
+//                if (VariableUtils.editionID != null) {
+                if (kv.getId().equals(VariableUtils.editionID)) {
+                    tvName.setBackgroundResource(R.color.clog);
+                    tvName.setTextColor(getResources().getColor(R.color.white));
+                } else {
+                    tvName.setBackgroundResource(R.color.white);
+                    tvName.setTextColor(getResources().getColor(
+                            R.color.color_text_title));
+                }
+//                }
+            }
+
+            vItem.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (kv != null) {
+                        VariableUtils.editionID = kv.getId();
+                    }
+
+                    VariableUtils.modulesID = "";
+
+                    readyRequestParameterForEdition();
+
+                    // 显示加载框
+                    vUtils.showLoadingDialog("");
+                    //请求数据
+                    requestDataFromServer(false);
+                }
+            });
+        }
     }
 
-    private void setGdvModuleAdapter(int pos, String currentID) {
-        // 模块
-//        final String[] modules = getResources().getStringArray(
-//                R.array.arrays_module);
-//        List<String> modulesList = Utils.getList(modules);
-//        final PeriodGridAdapter mGdvAdapter = new PeriodGridAdapter(this,
-//                modulesList);
-        mGdvAdapter = new KeyValueAdapter(this, moduleList);
-        mGdvAdapter.setCurrentPosition(pos);
-        mGdvAdapter.setCurrentID(currentID);
-        gdvModule.setAdapter(mGdvAdapter);
+    /**
+     * 展示模块Gdv布局
+     *
+     * @param list 数据
+     */
+    public void showGdvModule(final List<KeyValue> list, CustomGridView01 gdv) {
+        resetGdvLayout(gdv);
+
+        for (int i = 0; i < list.size(); i++) {
+            final KeyValue kv = list.get(i);
+//            kv.setName("测试模块名");
+//            kv.setId("ceshi_module_id");
+//            kv.setChoiced(false);
+
+            View vItem = LayoutInflater.from(this).inflate(R.layout.layout_v_single_line, null);
+            TextView tvName = vItem.findViewById(R.id.tv_layout_v_single_line);
+            tvName.setText(list.get(i).getName());
+//            tvName.setText("测试模块名");
+            gdv.addChild(vItem);
+
+            if (kv != null) {
+//                if (moduleSelected != null) {
+                if (kv.getId().equals(VariableUtils.modulesID)) {
+                    tvName.setBackgroundResource(R.color.clog);
+                    tvName.setTextColor(getResources().getColor(R.color.white));
+                } else {
+                    tvName.setBackgroundResource(R.color.white);
+                    tvName.setTextColor(getResources().getColor(
+                            R.color.color_text_title));
+                }
+//                }
+            }
+
+            vItem.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (kv != null) {
+                        VariableUtils.modulesID = kv.getId();
+                    }
+
+                    readyRequestParameterForModule();
+
+                    // 显示加载框
+                    vUtils.showLoadingDialog("");
+                    //请求数据
+                    requestDataFromServer(false);
+                }
+            });
+        }
+    }
+
+    private void resetGdvLayout(CustomGridView01 gdv) {
+        if (gdv != null) {
+            gdv.removeAllViews();
+        }
     }
 
     private void setWidgetListeners() {
@@ -307,53 +392,6 @@ public class ChoiceCatalogAty extends Activity {
                 VariableUtils.modulesID = "";
 
                 readyRequestParameterSubject();
-
-                // 显示加载框
-                vUtils.showLoadingDialog("");
-                // 请求数据
-                requestDataFromServer(false);
-            }
-        });
-
-
-        gdvEdition.setOnItemClickListener(new OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View v,
-                                    int position, long id) {
-                if (editionList.get(position) != null) {
-                    KeyValue editionSelected = editionList.get(position);
-                    if (editionSelected != null) {
-                        VariableUtils.editionID = editionSelected.getId();
-                    }
-                }
-                VariableUtils.modulesID = "";
-
-                //存入首选项
-                PreferencesUtils.saveInfoToPreferences(ChoiceCatalogAty.this, ConstantsUtils.EDITION_ID, VariableUtils.editionID);
-
-                readyRequestParameterForEdition();
-
-                // 显示加载框
-                vUtils.showLoadingDialog("");
-                // 请求数据
-                requestDataFromServer(false);
-
-//                setCatalogAdapter("", "");
-            }
-        });
-
-        gdvModule.setOnItemClickListener(new OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View v,
-                                    int position, long id) {
-                if (moduleList.get(position) != null) {
-                    KeyValue moduleSelected = moduleList.get(position);
-                    if (moduleSelected != null) {
-                        VariableUtils.modulesID = moduleSelected.getId();
-                    }
-                }
-
-                readyRequestParameterForModule();
 
                 // 显示加载框
                 vUtils.showLoadingDialog("");
@@ -698,8 +736,12 @@ public class ChoiceCatalogAty extends Activity {
         // 刷新显示
         setGdvPeriodAdapter(-1, VariableUtils.periodID);
         setGdvSubjectAdapter(-1, VariableUtils.subjectID);
-        setGdvEditionAdapter(-1, VariableUtils.editionID);
-        setGdvModuleAdapter(-1, VariableUtils.modulesID);
+//        setGdvEditionAdapter(-1, VariableUtils.editionID);
+//        setGdvModuleAdapter(-1, VariableUtils.modulesID);
+
+        showGdvEdition(editionList, gdvEdition1);
+        showGdvModule(moduleList, gdvModule1);
+
         setCatalogAdapter(unitIDCurr, catelogSelected.getId());
 
         //存入首选项
