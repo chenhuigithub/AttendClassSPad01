@@ -21,10 +21,10 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
+        android:layout_marginLeft="@dimen/dimen_padding_002"
         android:layout_toRightOf="@id/iv_logo_layout_adapter_item_for_files"
         android:clickable="false"
         android:focusable="false"
-        android:layout_marginLeft="@dimen/dimen_padding_002"
         android:gravity="center_vertical"
         android:orientation="vertical">
 
@@ -89,29 +89,30 @@
                     <TextView
                         android:id="@+id/tv_preview_layout_adapter_item_for_files"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_height="match_parent"
                         android:padding="@dimen/dimen_padding_003"
                         android:text="预览"
                         android:textColor="@color/blue8"
-                        android:textSize="@dimen/dimen_text_006" />
+                        android:textSize="@dimen/dimen_text_006"
+                        android:visibility="gone" />
 
                     <View
                         android:layout_width="1.5dp"
                         android:layout_height="match_parent"
                         android:layout_marginTop="@dimen/dimen_padding_005"
-                        android:visibility="gone"
                         android:layout_marginBottom="@dimen/dimen_padding_005"
-                        android:background="@color/blue8" />
+                        android:background="@color/blue8"
+                        android:visibility="gone" />
 
                     <TextView
                         android:id="@+id/tv_share_layout_adapter_item_for_files"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:padding="@dimen/dimen_padding_003"
-                        android:visibility="gone"
                         android:text="共享"
                         android:textColor="@color/blue8"
-                        android:textSize="@dimen/dimen_text_006" />
+                        android:textSize="@dimen/dimen_text_006"
+                        android:visibility="gone" />
                 </LinearLayout>
 
                 <!--来源-->
@@ -122,8 +123,7 @@
                     android:clickable="false"
                     android:focusable="false"
                     android:gravity="center_vertical"
-                    android:orientation="horizontal">
-                </TextView>
+                    android:orientation="horizontal"></TextView>
 
             </LinearLayout>
         </LinearLayout>

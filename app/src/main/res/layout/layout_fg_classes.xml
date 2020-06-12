@@ -223,14 +223,14 @@
 
                 <!--Html文档类文件(组试题、组学案)预览-->
 
-                <LinearLayout
-                    android:id="@+id/ll_preview_content_html_layout_fg_classes"
+                <RelativeLayout
+                    android:id="@+id/rl_preview_content_html_layout_fg_classes"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:background="@color/white"
                     android:orientation="vertical"
                     android:padding="@dimen/dimen_padding_005"
-                    android:visibility="gone"></LinearLayout>
+                    android:visibility="gone"></RelativeLayout>
 
                 <!--音视频-->
                 <RelativeLayout

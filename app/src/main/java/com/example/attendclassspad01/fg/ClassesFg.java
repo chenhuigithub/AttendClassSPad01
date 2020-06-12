@@ -121,7 +121,7 @@ public class ClassesFg extends BaseNotPreLoadFg implements InterfacesCallback.IC
     private ListView lstvFiles;//授课列表
     private LinearLayout llNoFile;//没有授课文件
     private LinearLayout llAllPreviewContent;//ppt、viewpager区域
-    private LinearLayout llPreviewContentHtml;//预览Html区域
+    private RelativeLayout llPreviewContentHtml;//预览Html区域
     private RelativeLayout rlVideo;// 音视频
     private ImageView ivNoPreviewContent;// 无预览授课内容情况下的展示图片
     private View allFgView;// 总布局
@@ -220,8 +220,8 @@ public class ClassesFg extends BaseNotPreLoadFg implements InterfacesCallback.IC
         llAllPreviewContent = (LinearLayout) allFgView
                 .findViewById(R.id.ll_wrapper01_layout_fg_attend_class_detail);
 
-        llPreviewContentHtml = (LinearLayout) allFgView
-                .findViewById(R.id.ll_preview_content_html_layout_fg_classes);
+        llPreviewContentHtml = (RelativeLayout) allFgView
+                .findViewById(R.id.rl_preview_content_html_layout_fg_classes);
 
         //没有授课文件
         llNoFile = (LinearLayout) allFgView
@@ -697,6 +697,7 @@ public class ClassesFg extends BaseNotPreLoadFg implements InterfacesCallback.IC
                                 vUtils.dismissDialog();
                             }
                         });
+
                     } else if (getActivity().getResources().getString(R.string.group_omics).equals(fileFocus.getSource())) {//学案
                         resetOmicsList();
                         omicsList = com.alibaba.fastjson.JSON.parseArray(dataArr.toString(), TestData.class);
@@ -862,7 +863,7 @@ public class ClassesFg extends BaseNotPreLoadFg implements InterfacesCallback.IC
         if (fg.isAdded()) {
             transaction.show(fg).commit();
         } else {
-            transaction.replace(R.id.ll_preview_content_html_layout_fg_classes, fg).commit();//替换为名称为A的fragment并显示它
+            transaction.replace(R.id.rl_preview_content_html_layout_fg_classes, fg).commit();//替换为名称为A的fragment并显示它
         }
     }
 
